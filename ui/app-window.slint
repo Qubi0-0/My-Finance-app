@@ -1,4 +1,4 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, TextEdit } from "std-widgets.slint";
 
 
 component Buttoner inherits Rectangle {
@@ -25,14 +25,35 @@ component Buttoner inherits Rectangle {
     touch := TouchArea { }
 }
 
+
+component CalculateText inherits Rectangle {
+    text := Text {
+        text: "Text";
+        horizontal-alignment: center;
+        vertical-alignment: center;
+        color: white;
+        }
+    background: #333333;
+}
+
+component CalculateTextEdit inherits TextEdit {
+    height: 50px;
+    font-size: 17px;
+    text: "23";
+    horizontal-alignment: center;
+}
+
+
 export component AppWindow inherits Window {
     property <color> first_back: #242a3b;
     property <color> second_back: #39516e;
     property <color> third_back: #3c75aa;
     property <color> font_color: #ffffffcc;
     property <length> border_radius_val: 10px;
-    icon: @image-url("icons/graph.svg");
 
+    in-out property <int> active-tab: 1;
+
+    icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
     // in-out property <int> counter: 42;
     // callback request-increase-value();
@@ -53,34 +74,126 @@ export component AppWindow inherits Window {
                }
             }
         }
-        Row {
-            HorizontalLayout { // Graph for visualzing (will be done much later)
-                min-height: 100px;
-                Image {
-
-                    source: @image-url("icons/graph.svg");
-                    image-fit: ImageFit.contain;
+        VerticalLayout {
+            preferred-height: 200px;
+            Rectangle {
+                clip: true;
+                Rectangle { // Add new
+                    // background: first_back;
+                    x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
+                    animate x { duration: 125ms; easing: ease; }
+                    Image {
+                        source: root.icon;
+                        image-fit: ImageFit.contain;
+                    }
+                }
+                Rectangle { // Calculate
+                    background: second_back;
+                    x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
+                    animate x { duration: 125ms; easing: ease; }
+                    GridLayout {
+                        property <length> grid_width: self.width;
+                        // spacing-horizontal: parent.width - 2 * 200px;
+                        spacing-vertical: 10px;
+                        spacing-horizontal: 5px;
+                        Row {
+                        
+                            CalculateText {
+                                width: grid_width /3;
+                            }
+                            CalculateTextEdit {
+                                width: grid_width /3;
+                                text: "23";
+                            }   
+                            CalculateText {
+                                width: grid_width /3;
+                            }
+                        }
+                        Row {  
+                            CalculateText {
+                                width: grid_width /3;
+                            }
+                            CalculateTextEdit {
+                                width: grid_width /3;
+                                text: "23";
+                            }   
+                            CalculateText {
+                                width: grid_width /3;
+                            }
+                        }
+                     
+                    }
+                }
+                Rectangle { // Settings
+                    background: third_back;
+                    x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
+                    animate x { duration: 125ms; easing: ease; }
                 }
             }
-        }
-        Row { // Different options (will direct to other windows)
-            GridLayout {
-                spacing: 2px;
-                padding: 2px;
+            tab_bar := HorizontalLayout {
+                // spacing: 1px;
                 Buttoner {
-                    text: "add new";
-                    
+                    border-radius: 1px;
+                    text: "Add new";
+                    clicked => { root.active-tab = 0; }
                 }
                 Buttoner {
+                    border-radius: 1px;
                     text: "Calculate";
-                    
+                    clicked => { root.active-tab = 1; }
                 }
                 Buttoner {
+                    border-radius: 1px;
                     text: "Settings";
-                    
+                    clicked => { root.active-tab = 2; }
                 }
             }
-
         }
     }
 }
+
+
+
+
+
+export component Recipe inherits Window {
+    preferred-height: 200px;
+    in-out property <int> active-tab;
+    VerticalLayout {
+
+        Rectangle {
+            clip: true;
+            Rectangle {
+                background: red;
+                x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
+                animate x { duration: 125ms; easing: ease; }
+            }
+            Rectangle {
+                background: blue;
+                x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
+                animate x { duration: 125ms; easing: ease; }
+            }
+            Rectangle {
+                background: green;
+                x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
+                animate x { duration: 125ms; easing: ease; }
+            }
+        }
+        tab_bar := HorizontalLayout {
+            spacing: 3px;
+            Buttoner {
+                text: "Red";
+                clicked => { root.active-tab = 0; }
+            }
+            Buttoner {
+                text: "Blue";
+                clicked => { root.active-tab = 1; }
+            }
+            Buttoner {
+                text: "Green";
+                clicked => { root.active-tab = 2; }
+            }
+        }
+    }
+}
+
