@@ -1,18 +1,91 @@
 import { Button, VerticalBox } from "std-widgets.slint";
 
-export component AppWindow inherits Window {
-    in-out property <int> counter: 42;
-    callback request-increase-value();
-    VerticalBox {
-        Text {
-            text: "Counter: \{root.counter}";
-        }
 
-        Button {
-            text: "Increase value";
-            clicked => {
-                root.request-increase-value();
+component Buttoner inherits Rectangle {
+    property <color> first_back: #333333;
+    property <color> second_back: #374352;
+    property <color> third_back: #798188;
+    property <color> font_color: #ffffffcc;
+    property <length> border_radius_val: 10px;
+
+    in-out property text <=> txt.text;
+    callback clicked <=> touch.clicked;
+    border-radius: border_radius_val;
+    border-width: 1px;
+    border-color: root.background.darker(25%);
+    background: touch.pressed ? third_back : touch.has-hover ? second_back :  #445566;
+    height: 40px;
+    min-width: txt.preferred-width + 20px;
+    txt := Text {
+        font-size: 12px;
+        x: (parent.width - self.width)/2 + (touch.pressed ? 2px : 0);
+        y: (parent.height - self.height)/2 + (touch.pressed ? 1px : 0);
+        color: touch.pressed ? font_color : #eee;
+    }
+    touch := TouchArea { }
+}
+
+export component AppWindow inherits Window {
+    property <color> first_back: #242a3b;
+    property <color> second_back: #39516e;
+    property <color> third_back: #3c75aa;
+    property <color> font_color: #ffffffcc;
+    property <length> border_radius_val: 10px;
+    icon: @image-url("icons/graph.svg");
+
+    background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
+    // in-out property <int> counter: 42;
+    // callback request-increase-value();
+    GridLayout {
+        Row {
+            HorizontalLayout {
+                padding: 3px;
+                spacing: root.width/ 6;
+                height: 40px;
+               Text {
+                   preferred-height: root.height / 3;
+                   text: "Finance";
+                   color: font_color;
+                   font-size: 35px;
+                   vertical-alignment: center;
+                   horizontal-alignment: center;
+               }
+               Buttoner {
+                   width:  40px;
+                   height: parent.height * 0.9;
+                   text: "X";
+                   
+               }
             }
+        }
+        Row {
+            HorizontalLayout {
+
+                Image {
+
+                    source: @image-url("icons/graph.svg");
+                    image-fit: ImageFit.contain;
+                }
+            }
+        }
+        Row {
+            GridLayout {
+                spacing: 2px;
+                padding: 2px;
+                Buttoner {
+                    text: "Fun 1";
+                    
+                }
+                Buttoner {
+                    text: "Calculator";
+                    
+                }
+                Buttoner {
+                    text: "Settings";
+                    
+                }
+            }
+
         }
     }
 }
