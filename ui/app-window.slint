@@ -38,7 +38,7 @@ export component AppWindow inherits Window {
     // callback request-increase-value();
     GridLayout {
         Row {
-            HorizontalLayout {
+            HorizontalLayout { // Title 
                 padding: 3px;
                 spacing: root.width/ 6;
                 height: 40px;
@@ -46,20 +46,15 @@ export component AppWindow inherits Window {
                    preferred-height: root.height / 3;
                    text: "Finance";
                    color: font_color;
+                   font-italic: true;
                    font-size: 35px;
                    vertical-alignment: center;
                    horizontal-alignment: center;
                }
-               Buttoner {
-                   width:  40px;
-                   height: parent.height * 0.9;
-                   text: "X";
-                   
-               }
             }
         }
         Row {
-            HorizontalLayout {
+            HorizontalLayout { // Graph for visualzing (will be done much later)
                 min-height: 100px;
                 Image {
 
@@ -68,16 +63,16 @@ export component AppWindow inherits Window {
                 }
             }
         }
-        Row {
+        Row { // Different options (will direct to other windows)
             GridLayout {
                 spacing: 2px;
                 padding: 2px;
                 Buttoner {
-                    text: "Fun 1";
+                    text: "add new";
                     
                 }
                 Buttoner {
-                    text: "Calculator";
+                    text: "Calculate";
                     
                 }
                 Buttoner {
