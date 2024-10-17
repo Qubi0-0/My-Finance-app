@@ -1,5 +1,4 @@
-import { Button, VerticalBox, TextEdit } from "std-widgets.slint";
-
+import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
 
 component Buttoner inherits Rectangle {
     property <color> first_back: #333333;
@@ -27,20 +26,25 @@ component Buttoner inherits Rectangle {
 
 
 component CalculateText inherits Rectangle {
+    in-out property <string> text_value: "Text";
     text := Text {
-        text: "Text";
+        text: "\{text_value}";
         horizontal-alignment: center;
         vertical-alignment: center;
         color: white;
-        }
-    background: #333333;
+        opacity: 1;
+    }
+    border-radius: 10px;
+    background: #33333396;
 }
 
-component CalculateTextEdit inherits TextEdit {
-    height: 50px;
+component CalculateLineEdit inherits LineEdit {
+    input-type: InputType.decimal;
+    placeholder-text: "Input Value";
+    height: 45px;
     font-size: 17px;
-    text: "23";
     horizontal-alignment: center;
+    read-only: true;
 }
 
 
@@ -52,6 +56,15 @@ export component AppWindow inherits Window {
     property <length> border_radius_val: 10px;
 
     in-out property <int> active-tab: 1;
+    in-out property <string> selected_timespan;
+    in-out property <float> cost;
+    in-out property <float> day_value;
+    in-out property <float> week_value;
+    in-out property <float> month_value;
+    in-out property <float> year_value;
+
+
+    callback request-change-cost-estimations();
 
     icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
@@ -62,14 +75,14 @@ export component AppWindow inherits Window {
             HorizontalLayout { // Title 
                 padding: 3px;
                 spacing: root.width/ 6;
-                height: 40px;
+                height: 60px;
                Text {
+                   text: "My Finance";
                    preferred-height: root.height / 3;
-                   text: "Finance";
                    color: font_color;
                    font-italic: true;
                    font-size: 35px;
-                   vertical-alignment: center;
+                   vertical-alignment: top;
                    horizontal-alignment: center;
                }
             }
@@ -96,32 +109,93 @@ export component AppWindow inherits Window {
                         // spacing-horizontal: parent.width - 2 * 200px;
                         spacing-vertical: 10px;
                         spacing-horizontal: 5px;
+                        // padding: 1px;
+                        Row {
+                            CalculateText {
+                                text_value: "Input Value";
+                            }
+                            CalculateLineEdit {
+                                text: "\{root.cost}";
+                                width: grid_width /3;
+                                read-only: false;
+                                edited(text) => {
+                                    root.cost = text.to_float();
+                                    root.request-change-cost-estimations();
+                                }
+                            }
+                            HorizontalLayout {
+                                ComboBox {
+                                    enabled: true;
+                                    max-height: 10px; 
+                                    width: grid_width / 3 - 10px;
+                                    model: ["Daily", "Weekly" , "Monthly", "Yearly"];
+                                    current-value: "Daily";
+                                    selected => {
+                                        // Handle selection change
+                                        root.selected_timespan = self.current_value;
+                                    }
+                                }
+                            }
+                        }
+                        Row {
+                            CalculateText {
+                                text_value: "Daily";
+                                width: grid_width /3;
+                               
+                            }
+                            CalculateLineEdit { // Daily
+                                text: "\{root.day_value}";
+                                width: grid_width /3;
+                                placeholder-text: "Daily";
+                            }   
+                            CalculateText {
+                                width: grid_width /3 - 10px;
+                            }
+                        }
                         Row {
                         
                             CalculateText {
+                                text_value: "Weekly";
                                 width: grid_width /3;
+                               
                             }
-                            CalculateTextEdit {
+                            CalculateLineEdit { // Daily
+                                text: "\{root.week_value}";
                                 width: grid_width /3;
-                                text: "23";
+                                placeholder-text: "Weekly";
                             }   
                             CalculateText {
-                                width: grid_width /3;
+                                width: grid_width /3 - 10px;
                             }
                         }
                         Row {  
                             CalculateText {
+                                text_value: "Monthly";
                                 width: grid_width /3;
                             }
-                            CalculateTextEdit {
+                            CalculateLineEdit { // Monthly
+                                text: "\{root.month_value}";
                                 width: grid_width /3;
-                                text: "23";
+                                placeholder-text: "Monthly";
                             }   
                             CalculateText {
-                                width: grid_width /3;
+                                width: grid_width /3 - 10px;
                             }
                         }
-                     
+                        Row {  
+                            CalculateText {
+                                text_value: "Yearly";
+                                width: grid_width /3;
+                            }
+                            CalculateLineEdit { // Yearly
+                                text: "\{root.year_value}";
+                                width: grid_width /3;
+                                placeholder-text: "Yearly";
+                            }   
+                            CalculateText {
+                                width: grid_width /3 - 10px;
+                            }
+                        }
                     }
                 }
                 Rectangle { // Settings
