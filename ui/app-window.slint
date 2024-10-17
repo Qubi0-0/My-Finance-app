@@ -56,7 +56,7 @@ export component AppWindow inherits Window {
     property <length> border_radius_val: 10px;
 
     in-out property <int> active-tab: 1;
-    in-out property <string> selected_timespan;
+    in-out property <string> selected_timespan: "Daily";
     in-out property <float> cost;
     in-out property <float> day_value;
     in-out property <float> week_value;
@@ -221,51 +221,6 @@ export component AppWindow inherits Window {
                     text: "Settings";
                     clicked => { root.active-tab = 2; }
                 }
-            }
-        }
-    }
-}
-
-
-
-
-
-export component Recipe inherits Window {
-    preferred-height: 200px;
-    in-out property <int> active-tab;
-    VerticalLayout {
-
-        Rectangle {
-            clip: true;
-            Rectangle {
-                background: red;
-                x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
-                animate x { duration: 125ms; easing: ease; }
-            }
-            Rectangle {
-                background: blue;
-                x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
-                animate x { duration: 125ms; easing: ease; }
-            }
-            Rectangle {
-                background: green;
-                x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
-                animate x { duration: 125ms; easing: ease; }
-            }
-        }
-        tab_bar := HorizontalLayout {
-            spacing: 3px;
-            Buttoner {
-                text: "Red";
-                clicked => { root.active-tab = 0; }
-            }
-            Buttoner {
-                text: "Blue";
-                clicked => { root.active-tab = 1; }
-            }
-            Buttoner {
-                text: "Green";
-                clicked => { root.active-tab = 2; }
             }
         }
     }
