@@ -54,7 +54,15 @@ export component AppWindow inherits Window {
                     }
                 }
                 CalculateComponent {
+                    background: second_back;
                     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
+                    cost <=> root.cost;
+                    day_value <=>  root.day_value;
+                    week_value <=>  root.week_value;
+                    month_value <=>  root.month_value;
+                    year_value <=>  root.year_value;
+                    selected_timespan <=>  root.selected_timespan;
+                    request-change-cost-estimations =>{ root.request-change-cost-estimations(); }
                 }
                 Rectangle { // Settings
                     background: third_back;
