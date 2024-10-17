@@ -1,4 +1,4 @@
-# Slint Rust Template
+# Slint My Finance App
 
 Rust application that's using [Slint](https://slint.rs/) for Finance Management App.
 
