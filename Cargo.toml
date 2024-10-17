@@ -2,7 +2,7 @@
 name = "finance"
 version = "0.1.0"
 edition = "2021"
-
+description = "A desktop app to make couting easier"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -10,3 +10,7 @@ slint = "1.7.2"
 
 [build-dependencies]
 slint-build = "1.7.2"
+
+[package.metadata.bundle]
+name = "My Finance"
+identifier = "io.github.Qubi0-0.My-Finance"
