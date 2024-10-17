@@ -1,51 +1,6 @@
 import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
-
-component Buttoner inherits Rectangle {
-    property <color> first_back: #333333;
-    property <color> second_back: #374352;
-    property <color> third_back: #798188;
-    property <color> font_color: #ffffffcc;
-    property <length> border_radius_val: 10px;
-
-    in-out property text <=> txt.text;
-    callback clicked <=> touch.clicked;
-    border-radius: border_radius_val;
-    border-width: 1px;
-    border-color: root.background.darker(25%);
-    background: touch.pressed ? third_back : touch.has-hover ? second_back :  #445566;
-    height: 40px;
-    min-width: txt.preferred-width + 20px;
-    txt := Text {
-        font-size: 12px;
-        x: (parent.width - self.width)/2 + (touch.pressed ? 2px : 0);
-        y: (parent.height - self.height)/2 + (touch.pressed ? 1px : 0);
-        color: touch.pressed ? font_color : #eee;
-    }
-    touch := TouchArea { }
-}
-
-
-component CalculateText inherits Rectangle {
-    in-out property <string> text_value: "Text";
-    text := Text {
-        text: "\{text_value}";
-        horizontal-alignment: center;
-        vertical-alignment: center;
-        color: white;
-        opacity: 1;
-    }
-    border-radius: 10px;
-    background: #33333396;
-}
-
-component CalculateLineEdit inherits LineEdit {
-    input-type: InputType.decimal;
-    placeholder-text: "Input Value";
-    height: 45px;
-    font-size: 17px;
-    horizontal-alignment: center;
-    read-only: true;
-}
+import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint";
+import { CalculateComponent } from "calculate-window.slint";
 
 
 export component AppWindow inherits Window {
@@ -68,8 +23,6 @@ export component AppWindow inherits Window {
 
     icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
-    // in-out property <int> counter: 42;
-    // callback request-increase-value();
     GridLayout {
         Row {
             HorizontalLayout { // Title 
@@ -100,103 +53,8 @@ export component AppWindow inherits Window {
                         image-fit: ImageFit.contain;
                     }
                 }
-                Rectangle { // Calculate
-                    background: second_back;
+                CalculateComponent {
                     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
-                    animate x { duration: 125ms; easing: ease; }
-                    GridLayout {
-                        property <length> grid_width: self.width;
-                        // spacing-horizontal: parent.width - 2 * 200px;
-                        spacing-vertical: 10px;
-                        spacing-horizontal: 5px;
-                        // padding: 1px;
-                        Row {
-                            CalculateText {
-                                text_value: "Input Value";
-                            }
-                            CalculateLineEdit {
-                                text: "\{root.cost}";
-                                width: grid_width /3;
-                                read-only: false;
-                                edited(text) => {
-                                    root.cost = text.to_float();
-                                    root.request-change-cost-estimations();
-                                }
-                            }
-                            HorizontalLayout {
-                                ComboBox {
-                                    enabled: true;
-                                    max-height: 10px; 
-                                    width: grid_width / 3 - 10px;
-                                    model: ["Daily", "Weekly" , "Monthly", "Yearly"];
-                                    current-value: "Daily";
-                                    selected => {
-                                        // Handle selection change
-                                        root.selected_timespan = self.current_value;
-                                    }
-                                }
-                            }
-                        }
-                        Row {
-                            CalculateText {
-                                text_value: "Daily cost";
-                                width: grid_width /3;
-                               
-                            }
-                            CalculateLineEdit { // Daily
-                                text: "\{root.day_value}";
-                                width: grid_width /3;
-                                placeholder-text: "Daily";
-                            }   
-                            CalculateText {
-                                width: grid_width /3 - 10px;
-                            }
-                        }
-                        Row {
-                        
-                            CalculateText {
-                                text_value: "Weekly cost";
-                                width: grid_width /3;
-                               
-                            }
-                            CalculateLineEdit { // Daily
-                                text: "\{root.week_value}";
-                                width: grid_width /3;
-                                placeholder-text: "Weekly";
-                            }   
-                            CalculateText {
-                                width: grid_width /3 - 10px;
-                            }
-                        }
-                        Row {  
-                            CalculateText {
-                                text_value: "Monthly cost";
-                                width: grid_width /3;
-                            }
-                            CalculateLineEdit { // Monthly
-                                text: "\{root.month_value}";
-                                width: grid_width /3;
-                                placeholder-text: "Monthly";
-                            }   
-                            CalculateText {
-                                width: grid_width /3 - 10px;
-                            }
-                        }
-                        Row {  
-                            CalculateText {
-                                text_value: "Yearly cost";
-                                width: grid_width /3;
-                            }
-                            CalculateLineEdit { // Yearly
-                                text: "\{root.year_value}";
-                                width: grid_width /3;
-                                placeholder-text: "Yearly";
-                            }   
-                            CalculateText {
-                                width: grid_width /3 - 10px;
-                            }
-                        }
-                    }
                 }
                 Rectangle { // Settings
                     background: third_back;

@@ -1,0 +1,49 @@
+import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
+
+
+export component Buttoner inherits Rectangle {
+    property <color> first_back: #333333;
+    property <color> second_back: #374352;
+    property <color> third_back: #798188;
+    property <color> font_color: #ffffffcc;
+    property <length> border_radius_val: 10px;
+
+    in-out property text <=> txt.text;
+    callback clicked <=> touch.clicked;
+    border-radius: border_radius_val;
+    border-width: 1px;
+    border-color: root.background.darker(25%);
+    background: touch.pressed ? third_back : touch.has-hover ? second_back :  #445566;
+    height: 40px;
+    min-width: txt.preferred-width + 20px;
+    txt := Text {
+        font-size: 12px;
+        x: (parent.width - self.width)/2 + (touch.pressed ? 2px : 0);
+        y: (parent.height - self.height)/2 + (touch.pressed ? 1px : 0);
+        color: touch.pressed ? font_color : #eee;
+    }
+    touch := TouchArea { }
+}
+
+
+export component CalculateText inherits Rectangle {
+    in-out property <string> text_value: "Text";
+    text := Text {
+        text: "\{text_value}";
+        horizontal-alignment: center;
+        vertical-alignment: center;
+        color: white;
+        opacity: 1;
+    }
+    border-radius: 10px;
+    background: #33333396;
+}
+
+export component CalculateLineEdit inherits LineEdit {
+    input-type: InputType.decimal;
+    placeholder-text: "Input Value";
+    height: 45px;
+    font-size: 17px;
+    horizontal-alignment: center;
+    read-only: true;
+}
