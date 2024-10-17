@@ -1,7 +1,6 @@
 use finance::calculate_cost_est;
 use slint::SharedString;
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
