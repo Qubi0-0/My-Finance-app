@@ -18,3 +18,6 @@ I want to make an app, which allows you to calculate your expenses, including on
     ```
     cargo run
     ```
+
+## Visualization (Early Stage)
+![alt text](images/Calculate_ui.png)
