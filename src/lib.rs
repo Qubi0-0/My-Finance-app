@@ -1,4 +1,6 @@
 use slint::SharedString;
+use slint::VecModel;
+use std::rc::Rc;
 
 pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32, f32) {
     let time_span_str: &str = &time_span;
@@ -18,13 +20,21 @@ pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32,
     )
 }
 
+#[derive(Debug, Clone)]
 pub struct Row {
     name: SharedString,
     cost: f32,
     time_span: SharedString,
 }
 
+pub fn add_new_item(item_list: &Rc<VecModel<Row>>, item_name: SharedString, value: f32, time_span_val: SharedString) {
+    item_list.push(Row {
+        name: item_name,
+        cost: value,
+        time_span: time_span_val,
+    });
+}
 
-pub fn add_new_items(item_list: &mut Vec<Row>, item_name: SharedString, value: f32, time_span_val: SharedString) {
-    item_list.push(Row{cost: value, name: item_name, time_span: time_span_val});
+pub fn remove_item(item_list: &Rc<VecModel<Row>>, index: usize) {
+    item_list.remove(index);
 }
