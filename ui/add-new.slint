@@ -1,6 +1,8 @@
 import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, CheckBox, Switch, TextEdit, GridBox } from "std-widgets.slint";
 import { MyComboBox, Buttoner } from "my-components.slint";
 
+
+@rust-attr(derive(serde::Serialize, serde::Deserialize))
 export struct Row {
     name: string,
     value: float,
@@ -8,10 +10,12 @@ export struct Row {
     timespan: string,
 }
 
+
+
 export component AddNew inherits Rectangle {
     // Define the dynamic data model
     in property <[Row]> value_list: [
-        { name: "test1", value: 10, checked: false, timespan: "Daily" },
+        { name: "test1", value: 10, checked: true, timespan: "Daily" },
         { name: "test2", value: 15, checked: false, timespan: "Daily" },
         { name: "test3", value: 20, checked: true, timespan: "Daily" },
     ];
@@ -58,7 +62,6 @@ export component AddNew inherits Rectangle {
                     toggled => {
                         element.checked = self.checked;
                     }
-
                     checked: element.checked;
                 }
                 Text {
@@ -113,8 +116,8 @@ export component AddNew inherits Rectangle {
 
         // Button to add a new row
         Buttoner {
-            text: "Add Row";
-            clicked => { add-element(); }
+            text: "Add Element";
+            clicked => { root.add-element(); }
         }
         VerticalBox {
             height: 50px;

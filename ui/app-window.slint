@@ -18,9 +18,15 @@ export component AppWindow inherits Window {
     in-out property <float> month_value;
     in-out property <float> year_value;
 
+    in-out property <string> sorter_box_val;
+    in-out property <string> adder_box_val;
+    in-out property <float> add_cost;
+    in-out property <string> add_name;
+
     preferred-height: 380px;
     min-width: 350px;
     callback request-change-cost-estimations();
+    callback add-element();
 
     icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
@@ -52,6 +58,11 @@ export component AppWindow inherits Window {
                 AddNew { // Add new
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
+                    add-element => {root.add-element();}
+                    sorter_box_val <=> root.sorter_box_val;
+                    adder_box_val <=> root.adder_box_val;
+                    cost <=> root.add_cost;
+                    name <=> root.add_name;
                 }
                 CalculateComponent {
                     background: second_back;
