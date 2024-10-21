@@ -1,4 +1,4 @@
-import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, CheckBox, Switch } from "std-widgets.slint";
+import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, CheckBox, Switch, TextEdit, GridBox } from "std-widgets.slint";
 import { MyComboBox, Buttoner } from "my-components.slint";
 
 export struct Row {
@@ -15,45 +15,106 @@ export component AddNew inherits Rectangle {
         { name: "test2", value: 15, checked: false, timespan: "Daily" },
         { name: "test3", value: 20, checked: true, timespan: "Daily" },
     ];
+
+
+    in-out property <string> sorter_box_val;
+    in-out property <string> adder_box_val;
+    in-out property <float> cost;
+    in-out property <string> name;
+
+    callback remove-element();
+    callback add-element();
+
+
     VerticalLayout {
+        GridLayout {
+            property <length> font_size: 20px;
+            height: 35px;
+
+            Text {
+                vertical-alignment: center;
+                horizontal-alignment: left;
+                height: parent.height;
+                text: "         Name ";
+                font-size: font_size;
+            }
+            Text {
+                vertical-alignment: center;
+                height: parent.height;
+                text: " Cost ";
+                font-size: font_size;
+            }
+            sorter_box := MyComboBox {
+                width: parent.width / 4;
+                selected => {
+                    root.sorter_box_val = self.current_value;
+                }
+            }
+        }
         list-view := ListView {
             for element in root.value_list: HorizontalLayout {
+                spacing: 23px;
                 Switch {
                     toggled => {
                         element.checked = self.checked;
                     }
 
-                    text: element.name;
                     checked: element.checked;
                 }
+                Text {
+                    height: 30px;
+                    width: parent.width/3 - 10px;
+                    text: "\{element.name}";
+                    opacity: element.checked? 1 : 0.6;
+                    font-size: 20px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    height: 30px;
+                    width: parent.width/3;
+                    text: "\{element.value}";
+                    opacity: element.checked? 1 : 0.6;
+                    font-size: 20px;
+                    vertical-alignment: center;
+                    horizontal-alignment: left;
+                }
+                delete_button := Buttoner {
+                    height: 25px;
+                    text: "X";
+                    width: 5%;
+                    clicked => { remove-element(); }
+                }
             }
-        }
-        VerticalBox { // Possible Graph later
-            height: 100px;
         }
         HorizontalLayout {
             // TextInput fields for new values
             LineEdit {
+                input-type: InputType.text;
                 width: 2 * parent.width / 4;
                 placeholder-text: "New Name";
+                text: "\{root.name}";
             }
 
             LineEdit {
+                input-type: InputType.decimal;
                 width: parent.width / 4;
-                placeholder-text: "New Value";
+                placeholder-text: "New cost";
+                text: "\{root.cost}";
+
             }
 
             MyComboBox {
                 width: parent.width / 4;
+                selected => {
+                    root.adder_box_val = self.current-value;
+                }
             }
         }
 
         // Button to add a new row
         Buttoner {
             text: "Add Row";
-            clicked => {
-            
-            }
+            clicked => { add-element(); }
         }
         VerticalBox {
             height: 50px;
