@@ -17,3 +17,14 @@ pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32,
         (yearly * 100.0).round() / 100.0,
     )
 }
+
+pub struct Row {
+    name: SharedString,
+    cost: f32,
+    time_span: SharedString,
+}
+
+
+pub fn add_new_items(item_list: &mut Vec<Row>, item_name: SharedString, value: f32, time_span_val: SharedString) {
+    item_list.push(Row{cost: value, name: item_name, time_span: time_span_val});
+}
