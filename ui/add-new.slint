@@ -1,44 +1,32 @@
-import { StandardTableView, VerticalBox, LineEdit } from "std-widgets.slint";
+import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, CheckBox, Switch } from "std-widgets.slint";
 import { MyComboBox, Buttoner } from "my-components.slint";
 
-struct TileData {
-    Name: string,
-    Value: float,
-    Checked: bool,
+export struct Row {
+    name: string,
+    value: float,
+    checked: bool,
     timespan: string,
 }
 
 export component AddNew inherits Rectangle {
     // Define the dynamic data model
-    in property <[TileData]> value_list: [
-        { Name: "test1", Value: 10, Checked: false, timespan: "Daily" },
-        { Name: "test2", Value: 15, Checked: false, timespan: "Daily" },
-        { Name: "test3", Value: 20, Checked: true, timespan: "Daily" },
+    in property <[Row]> value_list: [
+        { name: "test1", value: 10, checked: false, timespan: "Daily" },
+        { name: "test2", value: 15, checked: false, timespan: "Daily" },
+        { name: "test3", value: 20, checked: true, timespan: "Daily" },
     ];
+    VerticalLayout {
+        list-view := ListView {
+            for element in root.value_list: HorizontalLayout {
+                Switch {
+                    toggled => {
+                        element.checked = self.checked;
+                    }
 
-    VerticalBox {
-        StandardTableView {
-            columns: [
-                { title: "Name" },
-                { title: "Value" },
-                // { title: "Checked" },
-                // { title: "Timespan" },
-            ];
-                // for item[i] in value_list : Row{
-                //     Text {
-                //         text: item.Name;
-                //     }
-                //     Text {
-                //         text: item.Value.to_string();
-                //     }
-                //     Text {
-                //         text: item.Checked.to_string();
-                //     }
-                //     Text {
-                //         text: item.timespan;
-                //     }
-                // }
-            
+                    text: element.name;
+                    checked: element.checked;
+                }
+            }
         }
         VerticalBox { // Possible Graph later
             height: 100px;
@@ -46,17 +34,17 @@ export component AddNew inherits Rectangle {
         HorizontalLayout {
             // TextInput fields for new values
             LineEdit {
-                width: 3 * parent.width / 6;
+                // width: 2 * parent.width / 4;
                 placeholder-text: "New Name";
             }
 
             LineEdit {
-                width: parent.width / 6;
+                // width: parent.width / 4;
                 placeholder-text: "New Value";
             }
 
             MyComboBox {
-                width: 2 * parent.width / 6;
+                // width: parent.width / 4;
             }
         }
 
@@ -64,16 +52,7 @@ export component AddNew inherits Rectangle {
         Buttoner {
             text: "Add Row";
             clicked => {
-                // // Add a new row to the data model
-                // value_list.push({
-                //     Name: input_name.text,
-                //     Value: input_value.text.to_int(),
-                //     Checked: false,
-                //     timespan: input_timespan.text,
-                // });
-                // input_name.text = ""; // Clear the input field after adding
-                // input_value.text = ""; // Clear the input field after adding
-                // input_timespan.text = ""; // Clear the input field after adding
+            
             }
         }
         VerticalBox {
