@@ -1,0 +1,115 @@
+import { StandardTableView, VerticalBox, LineEdit, Button } from "std-widgets.slint";
+import { MyComboBox } from "my-components.slint";
+
+
+
+// export component AddNew inherits Rectangle {
+//     // Definicja dynamicznego modelu danych
+    
+
+//     VerticalBox {
+//         StandardTableView {
+//             in property <[TileData]> value_list: [
+//                 {Name: "test1", Value: 10, Checked: false, timespan: "Daily"},
+//                 {Name: "test2", Value: 15, Checked: false, timespan: "Daily"},
+//                 {Name: "test3", Value: 20, Checked: true, timespan: "Daily"},
+        
+//             ];
+//             columns: [
+//                 { title: "Header 1" },
+//                 { title: "Header 2" },
+//             ];
+//             rows: [
+                // for item[i] in value_list : test  {
+
+                // }
+//                 // [
+//                 //     { text: "Item 1" }, { text: "Item 2" },
+//                 // ],
+//                 // [
+//                 //     { text: "Item 1" }, { text: "Item 2" },
+//                 // ],
+//                 // [
+//                 //     { text: "Item 1" }, { text: "Item 2" },
+//                 // ]
+//             ];
+//         }
+//     }
+// }
+
+
+
+struct TileData {
+    Name: string,
+    Value: float,
+    Checked: bool,
+    timespan: string,
+}
+
+export component AddNew inherits Rectangle {
+    // Define the dynamic data model
+    in property <[TileData]> value_list: [
+        { Name: "test1", Value: 10, Checked: false, timespan: "Daily" },
+        { Name: "test2", Value: 15, Checked: false, timespan: "Daily" },
+        { Name: "test3", Value: 20, Checked: true, timespan: "Daily" },
+    ];
+
+    VerticalBox {
+        StandardTableView {
+            columns: [
+                { title: "Name" },
+                { title: "Value" },
+                // { title: "Checked" },
+                // { title: "Timespan" },
+            ];
+                // for item[i] in value_list : Row{
+                //     Text {
+                //         text: item.Name;
+                //     }
+                //     Text {
+                //         text: item.Value.to_string();
+                //     }
+                //     Text {
+                //         text: item.Checked.to_string();
+                //     }
+                //     Text {
+                //         text: item.timespan;
+                //     }
+                // }
+       
+        }
+        HorizontalLayout {
+            // TextInput fields for new values
+            LineEdit {
+                width: 3 * parent.width / 6;
+                placeholder-text: "New Name";
+            }
+
+            LineEdit {
+                width: parent.width / 6;
+                placeholder-text: "New Value";
+            }
+
+            MyComboBox {
+                width: 2 * parent.width / 6;
+            }
+        }
+
+        // Button to add a new row
+        Button {
+            text: "Add Row";
+            clicked => {
+                // // Add a new row to the data model
+                // value_list.push({
+                //     Name: input_name.text,
+                //     Value: input_value.text.to_int(),
+                //     Checked: false,
+                //     timespan: input_timespan.text,
+                // });
+                // input_name.text = ""; // Clear the input field after adding
+                // input_value.text = ""; // Clear the input field after adding
+                // input_timespan.text = ""; // Clear the input field after adding
+            }
+        }
+    }
+}

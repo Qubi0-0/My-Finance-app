@@ -1,5 +1,5 @@
 import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
-import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint";
+import { Buttoner, CalculateLineEdit, CalculateText, MyComboBox } from "my-components.slint";
 
 export component CalculateComponent inherits Rectangle {
     in-out property <int> active-tab: 1;
@@ -33,12 +33,8 @@ export component CalculateComponent inherits Rectangle {
                 }
             }
             HorizontalLayout {
-                ComboBox {
-                    enabled: true;
-                    max-height: 10px; 
+                MyComboBox {
                     width: grid_width / 3 - 10px;
-                    model: ["Daily", "Weekly" , "Monthly", "Yearly"];
-                    current-value: "Daily";
                     selected => {
                         root.selected_timespan = self.current_value;
                     }

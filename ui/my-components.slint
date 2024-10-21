@@ -47,3 +47,14 @@ export component CalculateLineEdit inherits LineEdit {
     horizontal-alignment: center;
     read-only: true;
 }
+
+export component MyComboBox inherits ComboBox {
+    enabled: true;
+    max-height: 10px; 
+    // width: grid_width / 3 - 10px;
+    model: ["Daily", "Weekly" , "Monthly", "Yearly"];
+    current-value: "Daily";
+    // selected => {
+    //     root.selected_timespan = self.current_value;
+    // }
+} 
