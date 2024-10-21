@@ -19,7 +19,7 @@ export component AppWindow inherits Window {
     in-out property <float> year_value;
 
     preferred-height: 380px;
-    preferred-width: 350px;
+    min-width: 350px;
     callback request-change-cost-estimations();
 
     icon: @image-url("icons/graph.svg");
@@ -44,15 +44,14 @@ export component AppWindow inherits Window {
         VerticalLayout {
             preferred-height: 200px;
             Rectangle {
+                background:= Image { 
+                    source: root.icon;
+                    image-fit: ImageFit.contain;
+                }
                 clip: true;
                 AddNew { // Add new
-                    // background: first_back;
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    // Image {
-                    //     source: root.icon;
-                    //     image-fit: ImageFit.contain;
-                    // }
                 }
                 CalculateComponent {
                     background: second_back;
@@ -69,6 +68,9 @@ export component AppWindow inherits Window {
                     background: third_back;
                     x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
+                    Text {
+                        text: "Will be Implemented Eventually :D";
+                    }
                 }
             }
             tab_bar := HorizontalLayout {
