@@ -1,5 +1,5 @@
-import { StandardTableView, VerticalBox, LineEdit, Button } from "std-widgets.slint";
-import { MyComboBox } from "my-components.slint";
+import { StandardTableView, VerticalBox, LineEdit } from "std-widgets.slint";
+import { MyComboBox, Buttoner } from "my-components.slint";
 
 
 
@@ -78,6 +78,9 @@ export component AddNew inherits Rectangle {
                 // }
        
         }
+        VerticalBox {
+            height: 100px;
+        }
         HorizontalLayout {
             // TextInput fields for new values
             LineEdit {
@@ -96,7 +99,7 @@ export component AddNew inherits Rectangle {
         }
 
         // Button to add a new row
-        Button {
+        Buttoner {
             text: "Add Row";
             clicked => {
                 // // Add a new row to the data model
@@ -110,6 +113,9 @@ export component AddNew inherits Rectangle {
                 // input_value.text = ""; // Clear the input field after adding
                 // input_timespan.text = ""; // Clear the input field after adding
             }
+        }
+        VerticalBox {
+            height: 50px;
         }
     }
 }
