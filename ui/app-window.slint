@@ -1,7 +1,7 @@
 import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
 import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint";
 import { CalculateComponent } from "calculate-window.slint";
-
+import { AddNew } from "add-new.slint";
 
 export component AppWindow inherits Window {
     property <color> first_back: #242a3b;
@@ -10,7 +10,7 @@ export component AppWindow inherits Window {
     property <color> font_color: #ffffffcc;
     property <length> border_radius_val: 10px;
 
-    in-out property <int> active-tab: 1;
+    in-out property <int> active-tab: 0;
     in-out property <string> selected_timespan: "Daily";
     in-out property <float> cost;
     in-out property <float> day_value;
@@ -45,14 +45,14 @@ export component AppWindow inherits Window {
             preferred-height: 200px;
             Rectangle {
                 clip: true;
-                Rectangle { // Add new
+                AddNew { // Add new
                     // background: first_back;
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    Image {
-                        source: root.icon;
-                        image-fit: ImageFit.contain;
-                    }
+                    // Image {
+                    //     source: root.icon;
+                    //     image-fit: ImageFit.contain;
+                    // }
                 }
                 CalculateComponent {
                     background: second_back;
@@ -63,7 +63,7 @@ export component AppWindow inherits Window {
                     month_value <=>  root.month_value;
                     year_value <=>  root.year_value;
                     selected_timespan <=>  root.selected_timespan;
-                    request-change-cost-estimations =>{ root.request-change-cost-estimations(); }
+                    request-change-cost-estimations => { root.request-change-cost-estimations(); }
                 }
                 Rectangle { // Settings
                     background: third_back;
