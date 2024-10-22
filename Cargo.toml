@@ -1,5 +1,5 @@
 [package]
-name = "finance"
+name = "myfinance"
 version = "0.1.0"
 edition = "2021"
 description = "A desktop app to make couting easier"
@@ -12,11 +12,6 @@ serde_json = "1.0"
 
 [build-dependencies]
 slint-build = "1.7.2"
-
-[lib]
-crate-type = ["lib", "cdylib"]
-path = "src/to_do.rs"
-name = "todo_lib"
 
 [dev-dependencies]
 i-slint-backend-testing = "1.8.0"

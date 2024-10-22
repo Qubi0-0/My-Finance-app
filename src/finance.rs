@@ -18,7 +18,6 @@ pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32,
     )
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
