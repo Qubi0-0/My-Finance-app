@@ -101,6 +101,7 @@ fn init() -> State {
     }
 }
 
+#[allow(dead_code)]
 pub struct State {
     pub main_window: AppWindow,
     pub todo_model: Rc<slint::VecModel<TodoItem>>,
