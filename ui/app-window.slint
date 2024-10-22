@@ -18,7 +18,7 @@ export component AppWindow inherits Window {
     property <color> font_color: #ffffffcc;
     property <length> border_radius_val: 10px;
 
-    in-out property <int> active-tab: 2;
+    in-out property <int> active-tab: 0;
     in-out property <string> selected_timespan: "Daily";
     in-out property <float> cost;
     in-out property <float> day_value;
@@ -36,7 +36,7 @@ export component AppWindow inherits Window {
     callback request-change-cost-estimations();
     callback add-element(string, float);
 
-    callback todo-added(string);
+    callback todo-added(string, float);
     callback remove-done();
     callback popup_confirmed;
     callback show_confirm_popup;
@@ -80,14 +80,21 @@ export component AppWindow inherits Window {
                     image-fit: ImageFit.contain;
                 }
                 clip: true;
-                AddNew { // Add new Tab
+                MainWindow { // Add New Tab
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    sorter_box_val <=> root.sorter_box_val;
-                    adder_box_val <=> root.adder_box_val;
-                    cost <=> root.add_cost;
-                    name <=> root.add_name;
-                    add-element(name, cost) => { root.add-element(name, cost); }
+                    // Text {
+                    //     text: "Will be Implemented Eventually :D";
+                    // }
+                    todo-added(string, float) => {root.todo-added(string, float);}
+                    remove-done() => {root.remove-done();}
+                    popup_confirmed => {root.popup_confirmed();}
+                    show_confirm_popup => {root.show_confirm_popup();}
+                    apply_sorting_and_filtering() => {root.apply_sorting_and_filtering();}
+                    show-header <=> root.show-header;
+                    is-sort-by-name <=> root.is-sort-by-name;
+                    hide-done-items <=> root.hide-done-items;
+                    todo-model <=> root.todo-model;
                 }
                 CalculateComponent {
                     background: second_back;
@@ -100,22 +107,13 @@ export component AppWindow inherits Window {
                     selected_timespan <=>  root.selected_timespan;
                     request-change-cost-estimations => { root.request-change-cost-estimations(); }
                 }
-                MainWindow { // Settings
+                Rectangle { // Settings
                     background: third_back;
                     x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    // Text {
-                    //     text: "Will be Implemented Eventually :D";
-                    // }
-                    todo-added(string) => {root.todo-added(string);}
-                    remove-done() => {root.remove-done();}
-                    popup_confirmed => {root.popup_confirmed();}
-                    show_confirm_popup => {root.show_confirm_popup();}
-                    apply_sorting_and_filtering() => {root.apply_sorting_and_filtering();}
-                    show-header <=> root.show-header;
-                    is-sort-by-name <=> root.is-sort-by-name;
-                    hide-done-items <=> root.hide-done-items;
-                    todo-model <=> root.todo-model;
+                    Text {
+                        text: "Will be Implemented Eventually :D";
+                    }
                 }
             }
             tab_bar := HorizontalLayout {

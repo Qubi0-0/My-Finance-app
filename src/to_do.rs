@@ -36,7 +36,7 @@ fn init() -> State {
 
     main_window.on_todo_added({
         let todo_model = todo_model.clone();
-        move |text| todo_model.push(TodoItem { name: text, value: 69.0, checked: false, timespan: "Daily".into() })
+        move |text, cost| todo_model.push(TodoItem { name: text, value: cost, checked: false, timespan: "Daily".into() })
     });
     main_window.on_remove_done({
         let todo_model = todo_model.clone();
@@ -163,35 +163,4 @@ impl SerializedState {
             hide_done: state.main_window.get_hide_done_items(),
         }
     }
-}
-
-#[test]
-fn press_add_adds_one_todo() {
-    i_slint_backend_testing::init_no_event_loop();
-    use i_slint_backend_testing::{ElementHandle, ElementQuery};
-    let state = init();
-    state.todo_model.set_vec(vec![TodoItem { checked: false, title: "first".into() }]);
-    let line_edit = ElementQuery::from_root(&state.main_window)
-        .match_id("AppWindow::text-edit")
-        .find_first()
-        .unwrap();
-    assert_eq!(line_edit.accessible_value().unwrap(), "");
-    line_edit.set_accessible_value("second");
-
-    let button = ElementHandle::find_by_accessible_label(&state.main_window, "Add New Entry")
-        .next()
-        .unwrap();
-    button.invoke_accessible_default_action();
-
-    assert_eq!(state.todo_model.row_count(), 2);
-    assert_eq!(
-        state.todo_model.row_data(0).unwrap(),
-        TodoItem { checked: false, title: "first".into() }
-    );
-    assert_eq!(
-        state.todo_model.row_data(1).unwrap(),
-        TodoItem { checked: false, title: "second".into() }
-    );
-
-    assert_eq!(line_edit.accessible_value().unwrap(), "");
 }

@@ -4,7 +4,7 @@
 
 import { SpinBox, Button, CheckBox, Slider, LineEdit, ScrollView, ListView,
     HorizontalBox, VerticalBox, GridBox, StandardButton, Palette, Switch } from "std-widgets.slint";
-import { Buttoner } from "my-components.slint";
+import { Buttoner, MyComboBox } from "my-components.slint";
 
 export struct TodoItem  {
     name: string,
@@ -13,7 +13,7 @@ export struct TodoItem  {
     timespan: string,
 }
 
-export component MainWindow inherits Window {
+export component MainWindow inherits Rectangle {
     in property <[TodoItem]> todo-model: [
         { name: "test1", value: 10, checked: true, timespan: "Daily" },
         { name: "test2", value: 15, checked: false, timespan: "Daily" },
@@ -24,7 +24,12 @@ export component MainWindow inherits Window {
     in-out property <bool> is-sort-by-name: false;
     in-out property <bool> hide-done-items: false;
 
-    callback todo-added(string);
+    in-out property <string> sorter_box_val;
+    in-out property <string> adder_box_val;
+    in-out property <float> cost;
+    in-out property <string> name;
+
+    callback todo-added(string, float);
     callback remove-done();
     callback popup_confirmed;
     callback show_confirm_popup;
@@ -34,29 +39,31 @@ export component MainWindow inherits Window {
     preferred-height: 600px;
 
 
-    VerticalBox {
-        HorizontalBox {
-            padding: 0px;
-            text-edit := LineEdit {
-                accepted(text) => {
-                    root.todo-added(self.text);
-                    self.text = "";
-                }
+    VerticalLayout {
+         GridLayout {
+            property <length> font_size: 20px;
+            height: 35px;
 
-                placeholder-text: "What needs to be done?";
+            Text {
+                vertical-alignment: center;
+                horizontal-alignment: left;
+                height: parent.height;
+                text: "         Name ";
+                font-size: font_size;
             }
-
-            btn := Button {
-                clicked => {
-                    root.todo-added(text-edit.text);
-                    text-edit.text = "";
+            Text {
+                vertical-alignment: center;
+                height: parent.height;
+                text: " Cost ";
+                font-size: font_size;
+            }
+            sorter_box := MyComboBox {
+                width: parent.width / 4;
+                selected => {
+                    root.sorter_box_val = self.current_value;
                 }
-
-                text: "Add New Entry";
-                enabled: text-edit.text != "";
             }
         }
-
         list-view := ListView {
             for element in root.todo-model: HorizontalLayout {
                 spacing: 23px;
@@ -95,6 +102,45 @@ export component MainWindow inherits Window {
                     clicked => {  root.remove-done(); }
                 }
             }
+            
         }
+        HorizontalLayout {
+            // TextInput fields for new values
+            text-edit := LineEdit {
+                input-type: InputType.text;
+                width: 2 * parent.width / 4;
+                placeholder-text: "New Name";
+                accepted(text) => {
+                                root.todo-added(self.text, value-edit.text.to-float());
+                                self.text = "";
+                            }
+            }
+            value-edit := LineEdit {
+                input-type: InputType.decimal;
+                width: parent.width / 4;
+                placeholder-text: "New cost";
+                accepted(text) => {
+                    root.todo-added(text-edit.text, self.text.to-float());
+                    self.text = "";
+                }
+            }
+
+            MyComboBox {
+                width: parent.width / 4;
+                selected => {
+                    root.adder_box_val = self.current-value;
+                }
+            }
+        }
+        // Button to add a new row
+        btn := Button {
+                clicked => {
+                    root.todo-added(text-edit.text, value-edit.text.to-float());
+                    text-edit.text = "";
+                }
+
+                text: "Add New Entry";
+                enabled: text-edit.text != "";
+            }
     }
 }
