@@ -1,0 +1,100 @@
+
+// Copyright © SixtyFPS GmbH <info@slint.dev>
+// SPDX-License-Identifier: MIT
+
+import { SpinBox, Button, CheckBox, Slider, LineEdit, ScrollView, ListView,
+    HorizontalBox, VerticalBox, GridBox, StandardButton, Palette, Switch } from "std-widgets.slint";
+import { Buttoner } from "my-components.slint";
+
+export struct TodoItem  {
+    name: string,
+    value: float,
+    checked: bool,
+    timespan: string,
+}
+
+export component MainWindow inherits Window {
+    in property <[TodoItem]> todo-model: [
+        { name: "test1", value: 10, checked: true, timespan: "Daily" },
+        { name: "test2", value: 15, checked: false, timespan: "Daily" },
+        { name: "test3", value: 20, checked: true, timespan: "Daily" },
+    ];
+
+    in property <bool> show-header: false;
+    in-out property <bool> is-sort-by-name: false;
+    in-out property <bool> hide-done-items: false;
+
+    callback todo-added(string);
+    callback remove-done();
+    callback popup_confirmed;
+    callback show_confirm_popup;
+    callback apply_sorting_and_filtering();
+
+    preferred-width: 400px;
+    preferred-height: 600px;
+
+
+    VerticalBox {
+        HorizontalBox {
+            padding: 0px;
+            text-edit := LineEdit {
+                accepted(text) => {
+                    root.todo-added(self.text);
+                    self.text = "";
+                }
+
+                placeholder-text: "What needs to be done?";
+            }
+
+            btn := Button {
+                clicked => {
+                    root.todo-added(text-edit.text);
+                    text-edit.text = "";
+                }
+
+                text: "Add New Entry";
+                enabled: text-edit.text != "";
+            }
+        }
+
+        list-view := ListView {
+            for element in root.todo-model: HorizontalLayout {
+                spacing: 23px;
+                Switch {
+                    toggled => {
+                        element.checked = self.checked;
+                    }
+                    checked: element.checked;
+                }
+                Text {
+                    height: 30px;
+                    width: parent.width/3 - 10px;
+                    text: "\{element.name}";
+                    opacity: element.checked? 1 : 0.6;
+                    font-size: 20px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    height: 30px;
+                    width: parent.width/3;
+                    text: "\{element.value}";
+                    opacity: element.checked? 1 : 0.6;
+                    font-size: 20px;
+                    vertical-alignment: center;
+                    horizontal-alignment: left;
+                }
+                delete_button := Buttoner {
+                    height: 30px;
+                    Image {
+                        source: @image-url("icons/bin.svg");
+                        image-fit: ImageFit.contain;
+                        height: parent.height - 5px;
+                        width: parent.width;
+                    }
+                    width: 5%;
+                    clicked => {  root.remove-done(); }
+                }
+            }
+        }
+    }
+}
