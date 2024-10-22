@@ -83,9 +83,6 @@ export component AppWindow inherits Window {
                 MainWindow { // Add New Tab
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    // Text {
-                    //     text: "Will be Implemented Eventually :D";
-                    // }
                     todo-added(string, float) => {root.todo-added(string, float);}
                     remove-done() => {root.remove-done();}
                     popup_confirmed => {root.popup_confirmed();}

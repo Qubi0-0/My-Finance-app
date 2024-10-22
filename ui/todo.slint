@@ -137,6 +137,7 @@ export component MainWindow inherits Rectangle {
                 clicked => {
                     root.todo-added(text-edit.text, value-edit.text.to-float());
                     text-edit.text = "";
+                    value-edit.text = "";
                 }
 
                 text: "Add New Entry";
