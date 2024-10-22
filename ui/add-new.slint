@@ -2,14 +2,13 @@ import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, Chec
 import { MyComboBox, Buttoner } from "my-components.slint";
 
 
-@rust-attr(derive(serde::Serialize, serde::Deserialize))
+// @rust-attr(derive(serde::Serialize, serde::Deserialize))
 export struct Row {
     name: string,
     value: float,
     checked: bool,
     timespan: string,
 }
-
 
 
 export component AddNew inherits Rectangle {
@@ -27,7 +26,7 @@ export component AddNew inherits Rectangle {
     in-out property <string> name;
 
     callback remove-element();
-    callback add-element();
+    callback add-element(string, float);
 
 
     VerticalLayout {
@@ -87,6 +86,7 @@ export component AddNew inherits Rectangle {
                         source: @image-url("icons/bin.svg");
                         image-fit: ImageFit.contain;
                         height: parent.height - 5px;
+                        width: parent.width;
                     }
                     width: 5%;
                     clicked => { remove-element(); }
@@ -121,7 +121,7 @@ export component AddNew inherits Rectangle {
         // Button to add a new row
         Buttoner {
             text: "Add Element";
-            clicked => { root.add-element(); }
+            clicked => { root.add-element(root.name, root.cost); }
         }
         VerticalBox {
             height: 50px;
