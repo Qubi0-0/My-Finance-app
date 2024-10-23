@@ -1,4 +1,6 @@
-use slint::SharedString;
+use crate::add_new::Row;
+use slint::{Model, SharedString};
+use std::rc::Rc;
 
 pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32, f32) {
     let time_span_str: &str = &time_span;
@@ -16,6 +18,14 @@ pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32,
         (monthly * 100.0).round() / 100.0,
         (yearly * 100.0).round() / 100.0,
     )
+}
+
+pub fn sum_expenses(expenses_list: &Rc<slint::VecModel<Row>>) -> f32 {
+    let sum = expenses_list
+        .iter()
+        .map(|row| if row.checked { row.value } else { 0.0 })
+        .sum();
+    sum
 }
 
 #[cfg(test)]
@@ -68,5 +78,69 @@ mod tests {
         assert_approx_eq(weekly, 70.0, 0.01);
         assert_approx_eq(monthly, 304.17, 0.01);
         assert_approx_eq(yearly, 3650.0, 0.01);
+    }
+
+    #[test]
+    fn test_sum_expenses() {
+        #[rustfmt::skip]
+        let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+            Row { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test2".into(), value: 15.3, checked: false, timespan: "Daily".into(), to_delete: false },
+            Row { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test1".into(), value: 69.5, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
+            Row { name: "test3".into(), value: 0.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        ]));
+        let sum = sum_expenses(&todo_model);
+        let expected = 99.5;
+        assert_eq!(sum, expected);
+    }
+
+    #[test]
+    fn test_sum_expenses_empty() {
+        #[rustfmt::skip]
+        let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+            Row { name: "test1".into(), value: 0.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        ]));
+        let sum = sum_expenses(&todo_model);
+        let expected = 0.0;
+        assert_eq!(sum, expected);
+    }
+
+    #[test]
+    fn test_sum_expenses_negative_values() {
+        #[rustfmt::skip]
+        let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+            Row { name: "test1".into(), value: -10.0, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test2".into(), value: -15.3, checked: false, timespan: "Daily".into(), to_delete: false },
+            Row { name: "test3".into(), value: -20.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        ]));
+        let sum = sum_expenses(&todo_model);
+        let expected = -30.0;
+        assert_eq!(sum, expected);
+    }
+
+    #[test]
+    fn test_sum_expenses_large_values() {
+        #[rustfmt::skip]
+        let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+            Row { name: "test1".into(), value: 1e10, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test2".into(), value: 2e10, checked: false, timespan: "Daily".into(), to_delete: false },
+            Row { name: "test3".into(), value: 3e10, checked: true, timespan: "Daily".into(), to_delete: false},
+        ]));
+        let sum = sum_expenses(&todo_model);
+        let expected = 4e10;
+        assert_eq!(sum, expected);
+    }
+
+    #[test]
+    fn test_sum_expenses_nan_values() {
+        #[rustfmt::skip]
+        let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+            Row { name: "test1".into(), value: f32::NAN, checked: true, timespan: "Daily".into(), to_delete: false},
+            Row { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
+        ]));
+        let sum = sum_expenses(&todo_model);
+        assert!(sum.is_nan());
     }
 }
