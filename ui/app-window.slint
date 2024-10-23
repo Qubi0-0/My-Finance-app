@@ -31,6 +31,8 @@ export component AppWindow inherits Window {
     in-out property <float> add_cost;
     in-out property <string> add_name;
 
+    in-out property <float> total_cost;
+
     preferred-height: 380px;
     min-width: 350px;
     callback request-change-cost-estimations();
@@ -38,9 +40,9 @@ export component AppWindow inherits Window {
 
     callback todo-added(string, float);
     callback remove-done();
-    callback popup_confirmed;
-    callback show_confirm_popup;
     callback apply_sorting_and_filtering();
+    callback sum_expenses();
+
 
     in property <bool> show-header: false;
     in-out property <bool> is-sort-by-name: false;
@@ -85,13 +87,14 @@ export component AppWindow inherits Window {
                     animate x { duration: 125ms; easing: ease; }
                     todo-added(string, float) => {root.todo-added(string, float);}
                     remove-done() => {root.remove-done();}
-                    popup_confirmed => {root.popup_confirmed();}
-                    show_confirm_popup => {root.show_confirm_popup();}
                     apply_sorting_and_filtering() => {root.apply_sorting_and_filtering();}
+                    sum_expenses => {root.sum_expenses();}
                     show-header <=> root.show-header;
                     is-sort-by-name <=> root.is-sort-by-name;
                     hide-done-items <=> root.hide-done-items;
                     todo-model <=> root.todo-model;
+                    total_cost <=> root.total_cost;
+
                 }
                 CalculateComponent { // Calculate
                     background: second_back;

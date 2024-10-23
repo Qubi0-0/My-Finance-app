@@ -4,7 +4,7 @@
 
 import { SpinBox, Button, CheckBox, Slider, LineEdit, ScrollView, ListView,
     HorizontalBox, VerticalBox, GridBox, StandardButton, Palette, Switch } from "std-widgets.slint";
-import { Buttoner, MyComboBox } from "my-components.slint";
+import { Buttoner, MyComboBox, CalculateText, CalculateLineEdit } from "my-components.slint";
 
 export struct Row  {
     name: string,
@@ -27,14 +27,14 @@ export component AddNew inherits Rectangle {
 
     in-out property <string> sorter_box_val;
     in-out property <string> adder_box_val;
-    in-out property <float> cost;
     in-out property <string> name;
+    in-out property <float> cost;
+    in-out property <float> total_cost;
 
     callback todo-added(string, float);
     callback remove-done();
-    callback popup_confirmed;
-    callback show_confirm_popup;
     callback apply_sorting_and_filtering();
+    callback sum_expenses();
 
     preferred-width: 400px;
     preferred-height: 600px;
@@ -71,6 +71,7 @@ export component AddNew inherits Rectangle {
                 Switch {
                     toggled => {
                         element.checked = self.checked;
+                        root.sum_expenses();
                     }
                     checked: element.checked;
                 }
@@ -103,10 +104,27 @@ export component AddNew inherits Rectangle {
                     clicked => {  
                         element.to-delete = true;
                         root.remove-done();
+                        root.sum_expenses();
                      }
                 }
             }
-            
+        }
+        HorizontalLayout {
+            CalculateText {
+                height: 40px;
+                width: 2 * parent.width / 3;
+                opacity: 1;
+                text_value: "Total Cost";
+                font-size: 18px;
+            }            
+            CalculateLineEdit {
+                width: parent.width / 3;
+                text: "\{root.total_cost}";
+            }
+        }
+        Rectangle {
+            width: root.width;
+            height: 3px;
         }
         HorizontalLayout {
             // TextInput fields for new values
@@ -142,6 +160,7 @@ export component AddNew inherits Rectangle {
                     root.todo-added(text-edit.text, value-edit.text.to-float());
                     text-edit.text = "";
                     value-edit.text = "";
+                    root.sum_expenses();
                 }
 
                 text: "Add New Entry";
