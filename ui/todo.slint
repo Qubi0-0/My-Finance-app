@@ -11,13 +11,14 @@ export struct TodoItem  {
     value: float,
     checked: bool,
     timespan: string,
+    to_delete: bool,
 }
 
 export component MainWindow inherits Rectangle {
     in property <[TodoItem]> todo-model: [
-        { name: "test1", value: 10, checked: true, timespan: "Daily" },
-        { name: "test2", value: 15, checked: false, timespan: "Daily" },
-        { name: "test3", value: 20, checked: true, timespan: "Daily" },
+        { name: "test1", value: 10, checked: true, timespan: "Daily", to_delete: false },
+        { name: "test2", value: 15, checked: false, timespan: "Daily", to_delete: false },
+        { name: "test3", value: 20, checked: true, timespan: "Daily", to_delete: false },
     ];
 
     in property <bool> show-header: false;
@@ -99,7 +100,10 @@ export component MainWindow inherits Rectangle {
                         width: parent.width;
                     }
                     width: 5%;
-                    clicked => {  root.remove-done(); }
+                    clicked => {  
+                        element.to-delete = true;
+                        root.remove-done();
+                     }
                 }
             }
             

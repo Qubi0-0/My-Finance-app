@@ -16,9 +16,9 @@ pub fn main() {
 fn init() -> State {
     #[rustfmt::skip]
     let todo_model = Rc::new(slint::VecModel::<TodoItem>::from(vec![
-        TodoItem { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into() },
-        TodoItem { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into() },
-        TodoItem { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into() },
+        TodoItem { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        TodoItem { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
+        TodoItem { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
     ]));
 
     let main_window = AppWindow::new().unwrap();
@@ -31,6 +31,7 @@ fn init() -> State {
                 value: cost,
                 checked: false,
                 timespan: "Daily".into(),
+                to_delete: false,
             })
         }
     });
@@ -39,7 +40,7 @@ fn init() -> State {
         move || {
             let mut offset = 0;
             for i in 0..todo_model.row_count() {
-                if todo_model.row_data(i - offset).unwrap().checked {
+                if todo_model.row_data(i - offset).unwrap().to_delete {
                     todo_model.remove(i - offset);
                     offset += 1;
                 }
@@ -78,7 +79,7 @@ fn init() -> State {
 
             if window.get_hide_done_items() {
                 window.set_todo_model(
-                    Rc::new(FilterModel::new(window.get_todo_model(), |e| !e.checked)).into(),
+                    Rc::new(FilterModel::new(window.get_todo_model(), |e| !e.to_delete)).into(),
                 );
             }
 
