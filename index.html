@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://slint.dev/css/demos-v1.css">
   </head>
   <body>
-    <p>This is the <a href="https://slint.dev">Slint</a> Todo Demo compiled to WebAssembly.</p>
+    <p>My Finance app simulation</p>
   <div id="spinner" style="position: relative;">
     <div class="spinner">Loading...</div>
   </div>
@@ -18,7 +18,9 @@
   </p>
     <script type="module">
       import init from './pkg/finance.js';
-      init();
+      init().finally(() => {
+      document.getElementById("spinner").remove();
+    });
     </script>
   </body>
 </html>
