@@ -1,7 +1,7 @@
 // Copyright © SixtyFPS GmbH <info@slint.dev>
 // SPDX-License-Identifier: MIT
 
-use crate::finance::calculate_cost_est;
+use crate::finance::*;
 use slint::{FilterModel, Model, SortModel};
 use std::rc::Rc;
 
@@ -15,7 +15,7 @@ pub fn main() {
 }
 fn init() -> State {
     #[rustfmt::skip]
-    let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
         Row { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
         Row { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
         Row { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
@@ -29,12 +29,13 @@ fn init() -> State {
             todo_model.push(Row {
                 name: text,
                 value: cost,
-                checked: false,
+                checked: true,
                 timespan: "Daily".into(),
                 to_delete: false,
             })
         }
     });
+
     main_window.on_remove_done({
         let todo_model = todo_model.clone();
         move || {
@@ -63,12 +64,6 @@ fn init() -> State {
         }
     });
 
-    let weak_window = main_window.as_weak();
-    main_window.on_popup_confirmed(move || {
-        let window = weak_window.unwrap();
-        window.hide().unwrap();
-    });
-
     main_window.on_apply_sorting_and_filtering({
         let weak_window = main_window.as_weak();
         let todo_model = todo_model.clone();
@@ -91,6 +86,15 @@ fn init() -> State {
                     .into(),
                 );
             }
+        }
+    });
+
+    main_window.on_sum_expenses({
+        let main_window_handle = main_window.as_weak();
+        let todo_model_clone = todo_model.clone();
+        move || {
+            let main_window = main_window_handle.unwrap();
+            main_window.set_total_cost(sum_expenses(&todo_model_clone));
         }
     });
 
