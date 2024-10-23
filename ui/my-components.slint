@@ -28,12 +28,14 @@ export component Buttoner inherits Rectangle {
 
 export component CalculateText inherits Rectangle {
     in-out property <string> text_value: "Text";
+    in-out property <length> font-size: 12px;
     text := Text {
         text: "\{text_value}";
         horizontal-alignment: center;
         vertical-alignment: center;
         color: white;
         opacity: 1;
+        font-size: font-size;
     }
     border-radius: 10px;
     background: #33333396;

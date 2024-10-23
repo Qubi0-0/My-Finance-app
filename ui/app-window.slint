@@ -3,6 +3,14 @@ import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint"
 import { CalculateComponent } from "calculate-window.slint";
 import { AddNew } from "add-new.slint";
 
+export struct Row  {
+    name: string,
+    value: float,
+    checked: bool,
+    timespan: string,
+    to_delete: bool,
+}
+
 export component AppWindow inherits Window {
     property <color> first_back: #242a3b;
     property <color> second_back: #39516e;
@@ -23,10 +31,29 @@ export component AppWindow inherits Window {
     in-out property <float> add_cost;
     in-out property <string> add_name;
 
+    in-out property <float> total_cost;
+
     preferred-height: 380px;
     min-width: 350px;
     callback request-change-cost-estimations();
-    callback add-element();
+    callback add-element(string, float);
+
+    callback todo-added(string, float, string);
+    callback remove-done();
+    callback apply_sorting_and_filtering();
+    callback sum_expenses();
+
+
+    in property <bool> show-header: false;
+    in-out property <bool> is-sort-by-name: false;
+    in-out property <bool> hide-done-items: false;
+
+    in property <[Row]> todo-model: [
+        { name: "Internet", value: 20, checked: true, timespan: "Daily", to_delete: false },
+        { name: "Coffee", value: 120, checked: false, timespan: "Daily", to_delete: false },
+        { name: "Gym Pass", value: 30, checked: true, timespan: "Daily", to_delete: false },
+    ];
+
 
     icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
@@ -55,16 +82,21 @@ export component AppWindow inherits Window {
                     image-fit: ImageFit.contain;
                 }
                 clip: true;
-                AddNew { // Add new
+                AddNew { // Add New Tab
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    add-element => {root.add-element();}
-                    sorter_box_val <=> root.sorter_box_val;
-                    adder_box_val <=> root.adder_box_val;
-                    cost <=> root.add_cost;
-                    name <=> root.add_name;
+                    todo-added(string, float, string) => {root.todo-added(string, float, string);}
+                    remove-done() => {root.remove-done();}
+                    apply_sorting_and_filtering() => {root.apply_sorting_and_filtering();}
+                    sum_expenses => {root.sum_expenses();}
+                    show-header <=> root.show-header;
+                    is-sort-by-name <=> root.is-sort-by-name;
+                    hide-done-items <=> root.hide-done-items;
+                    todo-model <=> root.todo-model;
+                    total_cost <=> root.total_cost;
+
                 }
-                CalculateComponent {
+                CalculateComponent { // Calculate
                     background: second_back;
                     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
                     cost <=> root.cost;
