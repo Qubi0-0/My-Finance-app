@@ -6,6 +6,18 @@
     <title>My Finance</title>
   </head>
   <body>
+    <p>This is the <a href="https://slint.dev">Slint</a> Todo Demo compiled to WebAssembly.</p>
+  <div id="spinner" style="position: relative;">
+    <div class="spinner">Loading...</div>
+  </div>
+  <canvas id="canvas" unselectable="on" data-slint-auto-resize-to-preferred="true"></canvas>
+  <p class="links">
+    <a href="https://github.com/slint-ui/slint/blob/master/examples/todo/">
+      View Source Code on GitHub</a> -
+    <a href="https://slint.dev/editor?load_demo=examples/todo/ui/todo.slint">
+      Open in SlintPad
+    </a>
+  </p>
     <script type="module">
       import init from './pkg/finance.js';
       init();
