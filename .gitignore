@@ -10,3 +10,4 @@ Cargo.toml
 /ui/
 /src/
 build.rs
+/.github/
