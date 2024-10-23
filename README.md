@@ -1,6 +1,8 @@
 # My Finance App
 
 Rust application that's using [Slint](https://slint.rs/) for Finance Management App.
+ 
+### Try it yourself => [Online simulation](https://qubi0-0.github.io/My-Finance/)
 
 ## About
 
