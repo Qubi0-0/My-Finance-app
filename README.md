@@ -19,5 +19,15 @@ I want to make an app, which allows you to calculate your expenses, including on
     cargo run
     ```
 
-## Visualization (Early Stage)
+
+# Visualization
+
+## Calculate Tab
+Allows to quickly check how much does something cost you depending how often you spend specific amount of money.
+
 ![alt text](images/Calculate_ui.png)
+
+## Add New Tab
+Allows to add new expenses to see total cost (in future there will be (daily,monthly and ect) functionalities added)
+
+![add new](images/addnew_ui.png)
