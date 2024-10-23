@@ -16,9 +16,9 @@ export struct Row  {
 
 export component AddNew inherits Rectangle {
     in property <[Row]> todo-model: [
-        { name: "test1", value: 10, checked: true, timespan: "Daily", to_delete: false },
-        { name: "test2", value: 15, checked: false, timespan: "Daily", to_delete: false },
-        { name: "test3", value: 20, checked: true, timespan: "Daily", to_delete: false },
+        { name: "Internet", value: 20, checked: true, timespan: "Daily", to_delete: false },
+        { name: "Coffee", value: 120, checked: false, timespan: "Daily", to_delete: false },
+        { name: "Gym Pass", value: 30, checked: true, timespan: "Daily", to_delete: false },
     ];
 
     in property <bool> show-header: false;
@@ -31,7 +31,7 @@ export component AddNew inherits Rectangle {
     in-out property <float> cost;
     in-out property <float> total_cost;
 
-    callback todo-added(string, float);
+    callback todo-added(string, float, string);
     callback remove-done();
     callback apply_sorting_and_filtering();
     callback sum_expenses();
@@ -133,7 +133,7 @@ export component AddNew inherits Rectangle {
                 width: 2 * parent.width / 4;
                 placeholder-text: "New Name";
                 accepted(text) => {
-                                root.todo-added(self.text, value-edit.text.to-float());
+                                root.todo-added(self.text, value-edit.text.to-float(), root.adder_box_val);
                                 self.text = "";
                             }
             }
@@ -142,7 +142,7 @@ export component AddNew inherits Rectangle {
                 width: parent.width / 4;
                 placeholder-text: "New cost";
                 accepted(text) => {
-                    root.todo-added(text-edit.text, self.text.to-float());
+                    root.todo-added(text-edit.text, self.text.to-float(), root.adder_box_val);
                     self.text = "";
                 }
             }
@@ -157,7 +157,7 @@ export component AddNew inherits Rectangle {
         // Button to add a new row
         btn := Button {
                 clicked => {
-                    root.todo-added(text-edit.text, value-edit.text.to-float());
+                    root.todo-added(text-edit.text, value-edit.text.to-float(), root.adder_box_val);
                     text-edit.text = "";
                     value-edit.text = "";
                     root.sum_expenses();

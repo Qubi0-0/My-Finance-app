@@ -16,21 +16,21 @@ pub fn main() {
 fn init() -> State {
     #[rustfmt::skip]
 let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
-        Row { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
-        Row { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
-        Row { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        Row { name: "Internet".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false },
+        Row { name: "Coffee".into(), value: 120.0, checked: false, timespan: "Daily".into(), to_delete: false },
+        Row { name: "Gym Pass".into(), value: 30.0, checked: true, timespan: "Daily".into(), to_delete: false },
     ]));
 
     let main_window = AppWindow::new().unwrap();
 
     main_window.on_todo_added({
         let todo_model = todo_model.clone();
-        move |text, cost| {
+        move |text, cost, time_span_val| {
             todo_model.push(Row {
                 name: text,
                 value: cost,
                 checked: true,
-                timespan: "Daily".into(),
+                timespan: time_span_val,
                 to_delete: false,
             })
         }
