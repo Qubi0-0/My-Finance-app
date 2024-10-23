@@ -15,10 +15,10 @@ pub fn main() {
 }
 fn init() -> State {
     #[rustfmt::skip]
-    let todo_model = Rc::new(slint::VecModel::<TodoItem>::from(vec![
-        TodoItem { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
-        TodoItem { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
-        TodoItem { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
+    let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
+        Row { name: "test1".into(), value: 10.0, checked: true, timespan: "Daily".into(), to_delete: false},
+        Row { name: "test2".into(), value: 15.0, checked: false, timespan: "Daily".into(), to_delete: false },
+        Row { name: "test3".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false},
     ]));
 
     let main_window = AppWindow::new().unwrap();
@@ -26,7 +26,7 @@ fn init() -> State {
     main_window.on_todo_added({
         let todo_model = todo_model.clone();
         move |text, cost| {
-            todo_model.push(TodoItem {
+            todo_model.push(Row {
                 name: text,
                 value: cost,
                 checked: false,
@@ -105,5 +105,5 @@ fn init() -> State {
 #[allow(dead_code)]
 pub struct State {
     pub main_window: AppWindow,
-    pub todo_model: Rc<slint::VecModel<TodoItem>>,
+    pub todo_model: Rc<slint::VecModel<Row>>,
 }

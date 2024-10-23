@@ -1,36 +1,47 @@
-import { StandardTableView, VerticalBox, LineEdit, HorizontalBox, ListView, CheckBox, Switch, TextEdit, GridBox } from "std-widgets.slint";
-import { MyComboBox, Buttoner } from "my-components.slint";
 
+// Copyright © SixtyFPS GmbH <info@slint.dev>
+// SPDX-License-Identifier: MIT
 
-// @rust-attr(derive(serde::Serialize, serde::Deserialize))
-export struct Row {
+import { SpinBox, Button, CheckBox, Slider, LineEdit, ScrollView, ListView,
+    HorizontalBox, VerticalBox, GridBox, StandardButton, Palette, Switch } from "std-widgets.slint";
+import { Buttoner, MyComboBox } from "my-components.slint";
+
+export struct Row  {
     name: string,
     value: float,
     checked: bool,
     timespan: string,
+    to_delete: bool,
 }
 
-
 export component AddNew inherits Rectangle {
-    // Define the dynamic data model
-    in property <[Row]> value_list: [
-        { name: "test1", value: 10, checked: true, timespan: "Daily" },
-        { name: "test2", value: 15, checked: false, timespan: "Daily" },
-        { name: "test3", value: 20, checked: true, timespan: "Daily" },
+    in property <[Row]> todo-model: [
+        { name: "test1", value: 10, checked: true, timespan: "Daily", to_delete: false },
+        { name: "test2", value: 15, checked: false, timespan: "Daily", to_delete: false },
+        { name: "test3", value: 20, checked: true, timespan: "Daily", to_delete: false },
     ];
 
+    in property <bool> show-header: false;
+    in-out property <bool> is-sort-by-name: false;
+    in-out property <bool> hide-done-items: false;
 
     in-out property <string> sorter_box_val;
     in-out property <string> adder_box_val;
     in-out property <float> cost;
     in-out property <string> name;
 
-    callback remove-element();
-    callback add-element(string, float);
+    callback todo-added(string, float);
+    callback remove-done();
+    callback popup_confirmed;
+    callback show_confirm_popup;
+    callback apply_sorting_and_filtering();
+
+    preferred-width: 400px;
+    preferred-height: 600px;
 
 
     VerticalLayout {
-        GridLayout {
+         GridLayout {
             property <length> font_size: 20px;
             height: 35px;
 
@@ -55,7 +66,7 @@ export component AddNew inherits Rectangle {
             }
         }
         list-view := ListView {
-            for element in root.value_list: HorizontalLayout {
+            for element in root.todo-model: HorizontalLayout {
                 spacing: 23px;
                 Switch {
                     toggled => {
@@ -89,25 +100,33 @@ export component AddNew inherits Rectangle {
                         width: parent.width;
                     }
                     width: 5%;
-                    clicked => { remove-element(); }
+                    clicked => {  
+                        element.to-delete = true;
+                        root.remove-done();
+                     }
                 }
             }
+            
         }
         HorizontalLayout {
             // TextInput fields for new values
-            LineEdit {
+            text-edit := LineEdit {
                 input-type: InputType.text;
                 width: 2 * parent.width / 4;
                 placeholder-text: "New Name";
-                text: "\{root.name}";
+                accepted(text) => {
+                                root.todo-added(self.text, value-edit.text.to-float());
+                                self.text = "";
+                            }
             }
-
-            LineEdit {
+            value-edit := LineEdit {
                 input-type: InputType.decimal;
                 width: parent.width / 4;
                 placeholder-text: "New cost";
-                text: "\{root.cost}";
-
+                accepted(text) => {
+                    root.todo-added(text-edit.text, self.text.to-float());
+                    self.text = "";
+                }
             }
 
             MyComboBox {
@@ -117,14 +136,16 @@ export component AddNew inherits Rectangle {
                 }
             }
         }
-
         // Button to add a new row
-        Buttoner {
-            text: "Add Element";
-            clicked => { root.add-element(root.name, root.cost); }
-        }
-        VerticalBox {
-            height: 50px;
-        }
+        btn := Button {
+                clicked => {
+                    root.todo-added(text-edit.text, value-edit.text.to-float());
+                    text-edit.text = "";
+                    value-edit.text = "";
+                }
+
+                text: "Add New Entry";
+                enabled: text-edit.text != "";
+            }
     }
 }

@@ -2,7 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod finance;
-mod to_do;
+mod add_new;
 fn main() {
-    to_do::main();
+    add_new::main();
 }

@@ -2,9 +2,8 @@ import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.s
 import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint";
 import { CalculateComponent } from "calculate-window.slint";
 import { AddNew } from "add-new.slint";
-import { MainWindow } from "todo.slint";
 
-export struct TodoItem  {
+export struct Row  {
     name: string,
     value: float,
     checked: bool,
@@ -47,7 +46,7 @@ export component AppWindow inherits Window {
     in-out property <bool> is-sort-by-name: false;
     in-out property <bool> hide-done-items: false;
 
-    in property <[TodoItem]> todo-model: [
+    in property <[Row]> todo-model: [
         { name: "test1", value: 10, checked: true, timespan: "Daily" },
         { name: "test2", value: 15, checked: false, timespan: "Daily" },
         { name: "test3", value: 20, checked: true, timespan: "Daily" },
@@ -81,7 +80,7 @@ export component AppWindow inherits Window {
                     image-fit: ImageFit.contain;
                 }
                 clip: true;
-                MainWindow { // Add New Tab
+                AddNew { // Add New Tab
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
                     todo-added(string, float) => {root.todo-added(string, float);}
@@ -94,7 +93,7 @@ export component AppWindow inherits Window {
                     hide-done-items <=> root.hide-done-items;
                     todo-model <=> root.todo-model;
                 }
-                CalculateComponent {
+                CalculateComponent { // Calculate
                     background: second_back;
                     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
                     cost <=> root.cost;
