@@ -1,6 +1,7 @@
 import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
 import { Buttoner, CalculateLineEdit, CalculateText } from "my-components.slint";
 import { CalculateComponent } from "calculate-window.slint";
+import { FuelComponent } from "fuel-window.slint";
 import { AddNew } from "add-new.slint";
 
 export struct Row  {
@@ -18,7 +19,7 @@ export component AppWindow inherits Window {
     property <color> font_color: #ffffffcc;
     property <length> border_radius_val: 10px;
 
-    in-out property <int> active-tab: 0;
+    in-out property <int> active-tab: 2;
     in-out property <string> selected_timespan: "Daily";
     in-out property <float> cost;
     in-out property <float> day_value;
@@ -107,13 +108,11 @@ export component AppWindow inherits Window {
                     selected_timespan <=>  root.selected_timespan;
                     request-change-cost-estimations => { root.request-change-cost-estimations(); }
                 }
-                Rectangle { // Settings
-                    background: third_back;
+                FuelComponent { // Settings
+                    // background: third_back;
                     x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
-                    Text {
-                        text: "Will be Implemented Eventually :D";
-                    }
+ 
                 }
             }
             tab_bar := HorizontalLayout {

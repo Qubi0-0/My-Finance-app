@@ -1,0 +1,99 @@
+import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
+import { Buttoner, CalculateLineEdit, CalculateText, MyComboBox } from "my-components.slint";
+
+export component FuelComponent inherits Rectangle {
+    in-out property <int> active-tab: 1;
+    in-out property <string> selected_timespan: "Daily";
+    in-out property <float> cost;
+    in-out property <float> day_value;
+    in-out property <float> week_value;
+    in-out property <float> month_value;
+    in-out property <float> year_value;
+
+    callback request-change-cost-estimations();
+    background: #39516e;
+    Image { 
+        source: @image-url("icons/fuel.svg");
+        image-fit: ImageFit.cover;
+        colorize: #1a1e2b;
+        width: 350px;
+    }
+
+    x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : root.width + 1px;
+    animate x { duration: 125ms; easing: ease; }
+    GridLayout {
+        property <length> grid_width: self.width;
+        spacing-vertical: 10px;
+        spacing-horizontal: 5px;
+        Row {
+            CalculateText {
+                text_value: "Input Value";
+            }
+            CalculateLineEdit {
+                text: "\{root.cost}";
+                width: grid_width / 3;
+                read-only: false;
+                edited(text) => {
+                    root.cost = text.to_float();
+                    root.request-change-cost-estimations();
+                }
+            }
+            HorizontalLayout {
+
+            }
+        }
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.month_value}";
+                width: grid_width / 3;
+                placeholder-text: "Monthly";
+            }   
+            CalculateText {
+                text_value: "Monthly cost";
+                width: grid_width / 3;
+            }
+        }
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.month_value}";
+                width: grid_width / 3;
+                placeholder-text: "Monthly";
+            }   
+            CalculateText {
+                text_value: "Monthly cost";
+                width: grid_width / 3;
+            }
+        }
+        Row {  
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.month_value}";
+                width: grid_width / 3;
+                placeholder-text: "Monthly";
+            }   
+            CalculateText {
+                text_value: "Monthly cost";
+                width: grid_width / 3;
+            }
+        }
+        Row {
+            Rectangle {
+                height: 35px;
+            }
+        }
+        Row {  
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.month_value}";
+                width: grid_width / 3;
+                placeholder-text: "Monthly";
+            }   
+            CalculateText {
+                text_value: "Monthly cost";
+                width: grid_width / 3;
+            }  
+        }
+    }
+}
