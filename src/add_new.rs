@@ -5,6 +5,9 @@ use crate::finance::*;
 use slint::{FilterModel, Model, SortModel};
 use std::rc::Rc;
 
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
+
 slint::include_modules!();
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
@@ -14,6 +17,9 @@ pub fn main() {
     main_window.run().unwrap();
 }
 fn init() -> State {
+    #[cfg(all(debug_assertions, target_arch = "wasm32"))]
+    console_error_panic_hook::set_once();
+
     #[rustfmt::skip]
 let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
         Row { name: "Internet".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false },
@@ -95,6 +101,17 @@ let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
         move || {
             let main_window = main_window_handle.unwrap();
             main_window.set_total_cost(sum_expenses(&todo_model_clone));
+        }
+    });
+
+    main_window.on_request_fuel_cost_estimations({
+        let main_window_handle = main_window.as_weak();
+        move || {
+            let main_window = main_window_handle.unwrap();
+            let fuel_price =  main_window.get__fuel_cost();
+            let distance = main_window.get__distance();
+            let consumption = main_window.get__consumption();
+            main_window.set__total_value(calculate_fuel_cost(fuel_price, distance, consumption));
         }
     });
 

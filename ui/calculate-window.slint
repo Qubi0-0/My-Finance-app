@@ -11,7 +11,12 @@ export component CalculateComponent inherits Rectangle {
     in-out property <float> year_value;
 
     callback request-change-cost-estimations();
-
+    Image { 
+        source: @image-url("icons/calculator.svg");
+        image-fit: ImageFit.cover;
+        colorize: #1a1e2b;
+        width: 350px;
+    }
 
     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : root.width + 1px;
     animate x { duration: 125ms; easing: ease; }

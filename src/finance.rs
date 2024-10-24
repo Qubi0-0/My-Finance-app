@@ -28,6 +28,11 @@ pub fn sum_expenses(expenses_list: &Rc<slint::VecModel<Row>>) -> f32 {
     sum
 }
 
+pub fn calculate_fuel_cost(fuel_price: f32, distance: f32, consumption: f32) -> f32 {
+    fuel_price * distance * (consumption / 100.0)
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -142,5 +147,35 @@ mod tests {
         ]));
         let sum = sum_expenses(&todo_model);
         assert!(sum.is_nan());
+    }
+
+    #[test]
+    fn test_calculate_fuel_cost() {
+        let consumption: f32 = 4.0;
+        let distance: f32 = 100.0;
+        let fuel_price: f32 = 4.0;
+        let calculated_cost: f32 = calculate_fuel_cost(fuel_price, distance, consumption);
+        let expected: f32 = 16.0;
+        assert_approx_eq(calculated_cost, expected, 0.1);
+    }
+
+    #[test]
+    fn test_calculate_fuel_cost_zero_distance() {
+        let fuel_price = 5.0;
+        let distance = 0.0;
+        let consumption = 8.0;
+        let expected_cost = 0.0;
+        let calculated_cost = calculate_fuel_cost(fuel_price, distance, consumption);
+        assert_eq!(calculated_cost, expected_cost);
+    }
+
+    #[test]
+    fn test_calculate_fuel_cost_zero_consumption() {
+        let fuel_price = 5.0;
+        let distance = 200.0;
+        let consumption = 0.0;
+        let expected_cost = 0.0;
+        let calculated_cost = calculate_fuel_cost(fuel_price, distance, consumption);
+        assert_eq!(calculated_cost, expected_cost);
     }
 }

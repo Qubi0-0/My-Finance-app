@@ -1,0 +1,103 @@
+import { Button, VerticalBox, TextEdit, LineEdit, ComboBox } from "std-widgets.slint";
+import { Buttoner, CalculateLineEdit, CalculateText, MyComboBox } from "my-components.slint";
+
+export component FuelComponent inherits Rectangle {
+    in-out property <int> active-tab: 1;
+
+
+    in-out property <float> fuel_cost: 0;
+    in-out property <float> distance: 0;
+    in-out property <float> consumption: 0;
+    in-out property <float> total_value: 0;
+
+    callback request-fuel-cost-estimations();
+    background: #39516e;
+    Image { 
+        source: @image-url("icons/fuel.svg");
+        image-fit: ImageFit.cover;
+        colorize: #1a1e2b;
+        width: 350px;
+    }
+
+    x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : root.width + 1px;
+    animate x { duration: 125ms; easing: ease; }
+    GridLayout {
+        property <length> grid_width: self.width;
+        spacing-vertical: 20px;
+        spacing-horizontal: 5px;
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.fuel_cost}";
+                width: grid_width / 3;
+                read-only: false;
+                edited(text) => {
+                    root.fuel_cost = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
+            }
+            CalculateText {
+                text_value: "Fuel cost [per Liter]";
+            }
+            
+        }
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.distance}";
+                width: grid_width / 3;
+                read-only: false;
+
+                placeholder-text: "Distance";
+                edited(text) => {
+                    root.distance = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
+            }   
+            CalculateText {
+                text_value: "Distance [Km]";
+                width: grid_width / 3;
+            }
+        }
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.consumption}";
+                width: grid_width / 3;
+                read-only: false;
+                placeholder-text: "Monthly";
+                edited(text) => {
+                    root.consumption = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
+            }   
+            CalculateText {
+                text_value: "Consumption \n [per 100 Km]";
+                width: grid_width / 3;
+            }
+        }
+        Row {
+            Rectangle {}
+
+        }
+        Row {  
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.total_value}";
+                width: grid_width / 3;
+                placeholder-text: "Total Cost";
+                edited(text) => {
+                    root.total_value = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
+            }   
+            CalculateText {
+                height: 45px;
+                text_value: "Total cost";
+                width: grid_width / 3;
+                opacity: 1;
+                font-size: 18px;
+            } 
+        }
+    }
+}

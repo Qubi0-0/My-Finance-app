@@ -33,3 +33,8 @@ Allows to quickly check how much does something cost you depending how often you
 Allows to add new expenses to see total cost (in future there will be (daily,monthly and ect) functionalities added)
 
 ![add new](images/addnew_ui.png)
+
+## Fuel Cost Tab 
+Allows to quickly estimate fuel cost for your trip
+
+![fuel cost](images/fuel_ui.png)
