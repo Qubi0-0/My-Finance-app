@@ -2,13 +2,13 @@
 
 Rust application that's using [Slint](https://slint.rs/) for Finance Management App.
  
-### Try it yourself => [Online simulation](https://qubi0-0.github.io/My-Finance/)
+### Try it yourself => [Online simulation](https://qubi0-0.github.io/My-Finance-app/)
 
 ## About
 
 I want to make an app, which allows you to calculate your expenses, including onetime purchases and monthly payments. 
 
-## Usage (or Modifying)
+## How to build
 
 1. Install Rust by following its [getting-started guide](https://www.rust-lang.org/learn/get-started).
    Once this is done, you should have the `rustc` compiler and the `cargo` build system installed in your `PATH`. 
@@ -16,11 +16,24 @@ I want to make an app, which allows you to calculate your expenses, including on
     ```
     cargo build
     ```
-3. Run the application binary:
+3. To build the application binary:
     ```
-    cargo run
+    cargo build --release
     ```
-
+### MacOS
+First you need to install cargo bundle
+```
+cargo install cargo-bundle        
+```
+and then you can build it
+```
+ cargo bundle --release       
+ ```
+ <!-- ### Windows
+`mingw-w64` (needed if crossbuild)
+```
+cargo build --target x86_64-pc-windows-gnu --release
+``` -->
 
 # Visualization
 
