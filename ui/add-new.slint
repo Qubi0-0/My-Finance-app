@@ -37,6 +37,13 @@ export component AddNew inherits Rectangle {
     preferred-width: 400px;
     preferred-height: 600px;
 
+    Image { 
+        source: @image-url("icons/graph.svg");
+        image-fit: ImageFit.contain;
+        colorize: #1a1e2b;
+        width: 350px;
+    }
+
     VerticalLayout {
         GridLayout {
             property <length> font_size: 20px;
