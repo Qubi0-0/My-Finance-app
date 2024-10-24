@@ -4,11 +4,11 @@ import { Buttoner, CalculateLineEdit, CalculateText, MyComboBox } from "my-compo
 export component FuelComponent inherits Rectangle {
     in-out property <int> active-tab: 1;
 
-    
-    in-out property <float> fuel_cost;
-    in-out property <float> distance;
-    in-out property <float> consumption;
-    in-out property <float> total_value;
+
+    in-out property <float> fuel_cost: 0;
+    in-out property <float> distance: 0;
+    in-out property <float> consumption: 0;
+    in-out property <float> total_value: 0;
 
     callback request-fuel-cost-estimations();
     background: #39516e;
