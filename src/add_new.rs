@@ -5,6 +5,9 @@ use crate::finance::*;
 use slint::{FilterModel, Model, SortModel};
 use std::rc::Rc;
 
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
+
 slint::include_modules!();
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
@@ -14,6 +17,9 @@ pub fn main() {
     main_window.run().unwrap();
 }
 fn init() -> State {
+    #[cfg(all(debug_assertions, target_arch = "wasm32"))]
+    console_error_panic_hook::set_once();
+
     #[rustfmt::skip]
 let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
         Row { name: "Internet".into(), value: 20.0, checked: true, timespan: "Daily".into(), to_delete: false },

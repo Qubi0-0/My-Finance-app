@@ -16,6 +16,10 @@ slint-build = "1.7.2"
 [dev-dependencies]
 i-slint-backend-testing = "1.8.0"
 
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = { version = "0.2.95" }
+console_error_panic_hook = "0.1.7"
+
 [package.metadata.bundle]
 name = "My Finance"
 identifier = "io.github.Qubi0-0.My-Finance"
