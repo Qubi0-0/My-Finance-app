@@ -2,7 +2,7 @@
   "name": "finance",
   "type": "module",
   "description": "A desktop app to make couting easier",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "files": [
     "finance_bg.wasm",
     "finance.js",
