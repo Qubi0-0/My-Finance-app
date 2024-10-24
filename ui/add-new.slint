@@ -1,9 +1,7 @@
-
 // Copyright © SixtyFPS GmbH <info@slint.dev>
 // SPDX-License-Identifier: MIT
 
-import { SpinBox, Button, CheckBox, Slider, LineEdit, ScrollView, ListView,
-    HorizontalBox, VerticalBox, GridBox, StandardButton, Palette, Switch } from "std-widgets.slint";
+import { Button, LineEdit, ListView, Switch } from "std-widgets.slint";
 import { Buttoner, MyComboBox, CalculateText, CalculateLineEdit } from "my-components.slint";
 
 export struct Row  {
@@ -39,12 +37,10 @@ export component AddNew inherits Rectangle {
     preferred-width: 400px;
     preferred-height: 600px;
 
-
     VerticalLayout {
-         GridLayout {
+        GridLayout {
             property <length> font_size: 20px;
             height: 35px;
-
             Text {
                 vertical-alignment: center;
                 horizontal-alignment: left;
@@ -146,7 +142,6 @@ export component AddNew inherits Rectangle {
                     self.text = "";
                 }
             }
-
             MyComboBox {
                 width: parent.width / 4;
                 selected => {
@@ -162,7 +157,6 @@ export component AddNew inherits Rectangle {
                     value-edit.text = "";
                     root.sum_expenses();
                 }
-
                 text: "Add New Entry";
                 enabled: text-edit.text != "";
             }
