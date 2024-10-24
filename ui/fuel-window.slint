@@ -65,7 +65,7 @@ export component FuelComponent inherits Rectangle {
                 text: "\{root.consumption}";
                 width: grid_width / 3;
                 read-only: false;
-                placeholder-text: "Monthly";
+                placeholder-text: "Consumption";
                 edited(text) => {
                     root.consumption = text.to_float();
                     root.request-fuel-cost-estimations();
