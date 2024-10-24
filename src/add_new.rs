@@ -98,6 +98,17 @@ let todo_model = Rc::new(slint::VecModel::<Row>::from(vec![
         }
     });
 
+    main_window.on_request_fuel_cost_estimations({
+        let main_window_handle = main_window.as_weak();
+        move || {
+            let main_window = main_window_handle.unwrap();
+            let fuel_price =  main_window.get__fuel_cost();
+            let distance = main_window.get__distance();
+            let consumption = main_window.get__consumption();
+            main_window.set__total_value(calculate_fuel_cost(fuel_price, distance, consumption));
+        }
+    });
+
     main_window.set_show_header(true);
     main_window.set_todo_model(todo_model.clone().into());
     State {
