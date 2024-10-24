@@ -19,3 +19,6 @@ i-slint-backend-testing = "1.8.0"
 [package.metadata.bundle]
 name = "My Finance"
 identifier = "io.github.Qubi0-0.My-Finance"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
