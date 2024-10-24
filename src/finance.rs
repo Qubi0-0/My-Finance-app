@@ -21,15 +21,15 @@ pub fn calculate_cost_est(cost: f32, time_span: SharedString) -> (f32, f32, f32,
 }
 
 pub fn sum_expenses(expenses_list: &Rc<slint::VecModel<Row>>) -> f32 {
-    let sum = expenses_list
+    let sum: f32 = expenses_list
         .iter()
         .map(|row| if row.checked { row.value } else { 0.0 })
         .sum();
-    sum
+    (sum * 100.0).round() / 100.0
 }
 
 pub fn calculate_fuel_cost(fuel_price: f32, distance: f32, consumption: f32) -> f32 {
-    fuel_price * distance * (consumption / 100.0)
+    (fuel_price * distance * (consumption / 100.0) * 100.0).round() / 100.0 
 }
 
 
