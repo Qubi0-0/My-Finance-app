@@ -23,6 +23,8 @@ console_error_panic_hook = "0.1.7"
 [package.metadata.bundle]
 name = "My Finance"
 identifier = "io.github.Qubi0-0.My-Finance"
+description = "A desktop app to make couting easier"
+icon = ["./icon.png"]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
