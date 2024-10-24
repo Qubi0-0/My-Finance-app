@@ -34,6 +34,13 @@ export component AppWindow inherits Window {
 
     in-out property <float> total_cost;
 
+
+    in-out property <float> _fuel_cost;
+    in-out property <float> _distance;
+    in-out property <float> _consumption;
+    in-out property <float> _total_value;
+
+
     preferred-height: 380px;
     min-width: 350px;
     callback request-change-cost-estimations();
@@ -43,7 +50,7 @@ export component AppWindow inherits Window {
     callback remove-done();
     callback apply_sorting_and_filtering();
     callback sum_expenses();
-
+    callback request-fuel-cost-estimations();
 
     in property <bool> show-header: false;
     in-out property <bool> is-sort-by-name: false;
@@ -112,7 +119,11 @@ export component AppWindow inherits Window {
                     // background: third_back;
                     x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
                     animate x { duration: 125ms; easing: ease; }
- 
+                    fuel_cost <=> root._fuel_cost;
+                    distance <=> root._distance;
+                    consumption <=> root._consumption;
+                    total_value <=> root._total_value;
+                    request-fuel-cost-estimations => {root.request-change-cost-estimations();}
                 }
             }
             tab_bar := HorizontalLayout {
@@ -129,7 +140,7 @@ export component AppWindow inherits Window {
                 }
                 Buttoner {
                     border-radius: 1px;
-                    text: "Settings";
+                    text: "Fuel cost  ";
                     clicked => { root.active-tab = 2; }
                 }
             }
