@@ -3,14 +3,14 @@ import { Buttoner, CalculateLineEdit, CalculateText, MyComboBox } from "my-compo
 
 export component FuelComponent inherits Rectangle {
     in-out property <int> active-tab: 1;
-    in-out property <string> selected_timespan: "Daily";
-    in-out property <float> cost;
-    in-out property <float> day_value;
-    in-out property <float> week_value;
-    in-out property <float> month_value;
-    in-out property <float> year_value;
 
-    callback request-change-cost-estimations();
+    
+    in-out property <float> fuel_cost;
+    in-out property <float> distance;
+    in-out property <float> consumption;
+    in-out property <float> total_value;
+
+    callback request-fuel-cost-estimations();
     background: #39516e;
     Image { 
         source: @image-url("icons/fuel.svg");
@@ -23,77 +23,81 @@ export component FuelComponent inherits Rectangle {
     animate x { duration: 125ms; easing: ease; }
     GridLayout {
         property <length> grid_width: self.width;
-        spacing-vertical: 10px;
+        spacing-vertical: 20px;
         spacing-horizontal: 5px;
         Row {
-            CalculateText {
-                text_value: "Input Value";
-            }
+            Rectangle {}
             CalculateLineEdit {
-                text: "\{root.cost}";
+                text: "\{root.fuel_cost}";
                 width: grid_width / 3;
                 read-only: false;
                 edited(text) => {
-                    root.cost = text.to_float();
-                    root.request-change-cost-estimations();
+                    root.fuel_cost = text.to_float();
+                    root.request-fuel-cost-estimations();
                 }
             }
-            HorizontalLayout {
+            CalculateText {
+                text_value: "Fuel cost [per Liter]";
+            }
+            
+        }
+        Row {
+            Rectangle {}
+            CalculateLineEdit {
+                text: "\{root.distance}";
+                width: grid_width / 3;
+                read-only: false;
 
+                placeholder-text: "Distance";
+                edited(text) => {
+                    root.distance = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
+            }   
+            CalculateText {
+                text_value: "Distance [Km]";
+                width: grid_width / 3;
             }
         }
         Row {
             Rectangle {}
             CalculateLineEdit {
-                text: "\{root.month_value}";
+                text: "\{root.consumption}";
                 width: grid_width / 3;
+                read-only: false;
                 placeholder-text: "Monthly";
+                edited(text) => {
+                    root.consumption = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
             }   
             CalculateText {
-                text_value: "Monthly cost";
+                text_value: "Consumption \n [per 100 Km]";
                 width: grid_width / 3;
             }
         }
         Row {
             Rectangle {}
-            CalculateLineEdit {
-                text: "\{root.month_value}";
-                width: grid_width / 3;
-                placeholder-text: "Monthly";
-            }   
-            CalculateText {
-                text_value: "Monthly cost";
-                width: grid_width / 3;
-            }
+
         }
         Row {  
             Rectangle {}
             CalculateLineEdit {
-                text: "\{root.month_value}";
+                text: "\{root.total_value}";
                 width: grid_width / 3;
-                placeholder-text: "Monthly";
+                placeholder-text: "Total Cost";
+                edited(text) => {
+                    root.total_value = text.to_float();
+                    root.request-fuel-cost-estimations();
+                }
             }   
             CalculateText {
-                text_value: "Monthly cost";
+                height: 45px;
+                text_value: "Total cost";
                 width: grid_width / 3;
-            }
-        }
-        Row {
-            Rectangle {
-                height: 35px;
-            }
-        }
-        Row {  
-            Rectangle {}
-            CalculateLineEdit {
-                text: "\{root.month_value}";
-                width: grid_width / 3;
-                placeholder-text: "Monthly";
-            }   
-            CalculateText {
-                text_value: "Monthly cost";
-                width: grid_width / 3;
-            }  
+                opacity: 1;
+                font-size: 18px;
+            } 
         }
     }
 }
