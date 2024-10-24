@@ -11,3 +11,4 @@ Cargo.toml
 /src/
 build.rs
 /.github/
+notes.txt
