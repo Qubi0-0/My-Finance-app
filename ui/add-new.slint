@@ -45,10 +45,12 @@ export component AddNew inherits Rectangle {
     }
 
     VerticalLayout {
-        GridLayout {
+        HorizontalLayout {
+            spacing: 52px;
             property <length> font_size: 20px;
             height: 35px;
             Text {
+                width: parent.width /3;
                 vertical-alignment: center;
                 horizontal-alignment: left;
                 height: parent.height;
@@ -56,17 +58,19 @@ export component AddNew inherits Rectangle {
                 font-size: font_size;
             }
             Text {
+                width: parent.width /3;
                 vertical-alignment: center;
                 height: parent.height;
                 text: " Cost ";
                 font-size: font_size;
             }
-            sorter_box := MyComboBox {
-                width: parent.width / 4;
-                selected => {
-                    root.sorter_box_val = self.current_value;
-                }
-            }
+            Rectangle {}
+            // sorter_box := MyComboBox {
+            //     width: parent.width / 4;
+            //     selected => {
+            //         root.sorter_box_val = self.current_value;
+            //     }
+            // }
         }
         list-view := ListView {
             for element in root.todo-model: HorizontalLayout {
@@ -149,12 +153,15 @@ export component AddNew inherits Rectangle {
                     self.text = "";
                 }
             }
-            MyComboBox {
-                width: parent.width / 4;
-                selected => {
-                    root.adder_box_val = self.current-value;
-                }
+            Rectangle {
+                background: #1e1e24;
             }
+            // MyComboBox {
+            //     width: parent.width / 4;
+            //     selected => {
+            //         root.adder_box_val = self.current-value;
+            //     }
+            // }
         }
         // Button to add a new row
         btn := Button {

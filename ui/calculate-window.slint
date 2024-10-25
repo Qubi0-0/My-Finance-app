@@ -42,6 +42,7 @@ export component CalculateComponent inherits Rectangle {
                     width: grid_width / 3 - 10px;
                     selected => {
                         root.selected_timespan = self.current_value;
+                        root.request-change-cost-estimations();
                     }
                 }
             }
