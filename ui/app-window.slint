@@ -50,7 +50,7 @@ export component AppWindow inherits Window {
     callback remove-done();
     callback apply_sorting_and_filtering();
     callback sum_expenses();
-    callback request-fuel-cost-estimations();
+    callback request-fuel-cost-estimations(float, float, float);
 
     in property <bool> show-header: false;
     in-out property <bool> is-sort-by-name: false;
@@ -119,7 +119,7 @@ export component AppWindow inherits Window {
                     distance <=> root._distance;
                     consumption <=> root._consumption;
                     total_value <=> root._total_value;
-                    request-fuel-cost-estimations => {root.request-fuel-cost-estimations();}
+                    request-fuel-cost-estimations => {root.request-fuel-cost-estimations(root._fuel_cost, root._distance, root._consumption);}
                 }
             }
             tab_bar := HorizontalLayout {

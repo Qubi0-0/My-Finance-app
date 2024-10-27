@@ -10,7 +10,7 @@ export component FuelComponent inherits Rectangle {
     in-out property <float> consumption: 0;
     in-out property <float> total_value: 0;
 
-    callback request-fuel-cost-estimations();
+    callback request-fuel-cost-estimations(float, float, float);
     background: #39516e;
     Image { 
         source: @image-url("icons/fuel.svg");
@@ -33,7 +33,7 @@ export component FuelComponent inherits Rectangle {
                 read-only: false;
                 edited(text) => {
                     root.fuel_cost = text.to_float();
-                    root.request-fuel-cost-estimations();
+                    root.request-fuel-cost-estimations(root.fuel_cost, root.distance, root.consumption);
                 }
                 placeholder-text: "Fuel cost";
             }
@@ -52,7 +52,7 @@ export component FuelComponent inherits Rectangle {
                 placeholder-text: "Distance";
                 edited(text) => {
                     root.distance = text.to_float();
-                    root.request-fuel-cost-estimations();
+                    root.request-fuel-cost-estimations(root.fuel_cost, root.distance, root.consumption);
                 }
             }   
             CalculateText {
@@ -69,7 +69,7 @@ export component FuelComponent inherits Rectangle {
                 placeholder-text: "Consumption";
                 edited(text) => {
                     root.consumption = text.to_float();
-                    root.request-fuel-cost-estimations();
+                    root.request-fuel-cost-estimations(root.fuel_cost, root.distance, root.consumption);
                 }
             }   
             CalculateText {
@@ -89,7 +89,7 @@ export component FuelComponent inherits Rectangle {
                 placeholder-text: "Total Cost";
                 edited(text) => {
                     root.total_value = text.to_float();
-                    root.request-fuel-cost-estimations();
+                    root.request-fuel-cost-estimations(root.fuel_cost, root.distance, root.consumption);
                 }
             }   
             CalculateText {
