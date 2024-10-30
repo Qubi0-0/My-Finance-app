@@ -29,9 +29,8 @@ pub fn sum_expenses(expenses_list: &Rc<slint::VecModel<Row>>) -> f32 {
 }
 
 pub fn calculate_fuel_cost(fuel_price: f32, distance: f32, consumption: f32) -> f32 {
-    (fuel_price * distance * consumption).round() / 100.0 
+    (fuel_price * distance * consumption).round() / 100.0
 }
-
 
 #[cfg(test)]
 mod tests {
