@@ -34,15 +34,14 @@ export component AppWindow inherits Window {
 
     in-out property <float> total_cost;
 
-
     in-out property <float> _fuel_cost;
     in-out property <float> _distance;
     in-out property <float> _consumption;
     in-out property <float> _total_value;
 
-
     preferred-height: 380px;
     min-width: 350px;
+    min-height: 300px;
     callback request-change-cost-estimations();
     callback add-element(string, float);
 
@@ -62,85 +61,112 @@ export component AppWindow inherits Window {
         { name: "Gym Pass", value: 30, checked: true, timespan: "Daily", to_delete: false },
     ];
 
-
     icon: @image-url("icons/graph.svg");
     background: @linear-gradient(135deg, first_back 15%, second_back 50%, third_back 100%);
     GridLayout {
         Row {
             HorizontalLayout { // Title 
                 padding: 3px;
-                spacing: root.width/ 6;
+                spacing: root.width / 6;
                 height: 60px;
-               Text {
-                   text: "My Finance";
-                   preferred-height: root.height / 3;
-                   color: font_color;
-                   font-italic: true;
-                   font-size: 35px;
-                   vertical-alignment: top;
-                   horizontal-alignment: center;
-               }
+                Text {
+                    text: "My Finance";
+                    preferred-height: root.height / 3;
+                    color: font_color;
+                    font-italic: true;
+                    font-size: 35px;
+                    vertical-alignment: top;
+                    horizontal-alignment: center;
+                }
             }
         }
+
         VerticalLayout {
             preferred-height: 200px;
             Rectangle {
                 clip: true;
                 AddNew { // Add New Tab
                     x: root.active-tab == 0 ? 0 : root.active-tab < 0 ? - self.width - 1px : parent.width + 1px;
-                    animate x { duration: 125ms; easing: ease; }
-                    todo-added(string, float, string) => {root.todo-added(string, float, string);}
-                    remove-done() => {root.remove-done();}
-                    apply_sorting_and_filtering() => {root.apply_sorting_and_filtering();}
-                    sum_expenses => {root.sum_expenses();}
+                    animate x {
+                        duration: 125ms;
+                        easing: ease;
+                    }
+                    todo-added(string, float, string) => {
+                        root.todo-added(string, float, string);
+                    }
+                    remove-done() => {
+                        root.remove-done();
+                    }
+                    apply_sorting_and_filtering() => {
+                        root.apply_sorting_and_filtering();
+                    }
+                    sum_expenses => {
+                        root.sum_expenses();
+                    }
                     show-header <=> root.show-header;
                     is-sort-by-name <=> root.is-sort-by-name;
                     hide-done-items <=> root.hide-done-items;
                     todo-model <=> root.todo-model;
                     total_cost <=> root.total_cost;
-
                 }
+
                 CalculateComponent { // Calculate
                     background: second_back;
                     x: root.active-tab == 1 ? 0 : root.active-tab < 1 ? - self.width - 1px : parent.width + 1px;
                     cost <=> root.cost;
-                    day_value <=>  root.day_value;
-                    week_value <=>  root.week_value;
-                    month_value <=>  root.month_value;
-                    year_value <=>  root.year_value;
-                    selected_timespan <=>  root.selected_timespan;
-                    request-change-cost-estimations => { root.request-change-cost-estimations(); }
+                    day_value <=> root.day_value;
+                    week_value <=> root.week_value;
+                    month_value <=> root.month_value;
+                    year_value <=> root.year_value;
+                    selected_timespan <=> root.selected_timespan;
+                    request-change-cost-estimations => {
+                        root.request-change-cost-estimations();
+                    }
                 }
+
                 FuelComponent { // Settings
                     // background: third_back;
                     x: root.active-tab == 2 ? 0 : root.active-tab < 2 ? - self.width - 1px : parent.width + 1px;
-                    animate x { duration: 125ms; easing: ease; }
+                    animate x {
+                        duration: 125ms;
+                        easing: ease;
+                    }
                     fuel_cost <=> root._fuel_cost;
                     distance <=> root._distance;
                     consumption <=> root._consumption;
                     total_value <=> root._total_value;
-                    request-fuel-cost-estimations => {root.request-fuel-cost-estimations(root._fuel_cost, root._distance, root._consumption);}
+                    request-fuel-cost-estimations => {
+                        root.request-fuel-cost-estimations(root._fuel_cost, root._distance, root._consumption);
+                    }
                 }
             }
+
             tab_bar := HorizontalLayout {
                 // spacing: 1px;
                 Buttoner {
                     border-radius: 1px;
                     text: "Add new";
-                    clicked => { root.active-tab = 0; }
+                    clicked => {
+                        root.active-tab = 0;
+                    }
                 }
+
                 Buttoner {
                     border-radius: 1px;
                     text: "Calculate";
-                    clicked => { root.active-tab = 1; }
+                    clicked => {
+                        root.active-tab = 1;
+                    }
                 }
+
                 Buttoner {
                     border-radius: 1px;
                     text: "Fuel cost  ";
-                    clicked => { root.active-tab = 2; }
+                    clicked => {
+                        root.active-tab = 2;
+                    }
                 }
             }
         }
     }
 }
-
